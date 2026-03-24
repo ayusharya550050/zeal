@@ -1,0 +1,137 @@
+/* ========================================
+   ZEAL Cultural Festival - Custom Cursor
+   ======================================== */
+
+.cursor-dot {
+  position: fixed;
+  width: 8px;
+  height: 8px;
+  background: var(--gold);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate(-50%, -50%);
+  transition: transform 0.1s ease, background 0.2s ease, width 0.3s ease, height 0.3s ease;
+  box-shadow: 0 0 8px var(--gold), 0 0 20px rgba(212,175,55,0.4);
+  mix-blend-mode: difference;
+}
+
+.cursor-ring {
+  position: fixed;
+  width: 36px;
+  height: 36px;
+  border: 1.5px solid rgba(212, 175, 55, 0.6);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99998;
+  transform: translate(-50%, -50%);
+  transition: transform 0.18s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              width 0.3s ease,
+              height 0.3s ease,
+              border-color 0.3s ease,
+              opacity 0.3s ease;
+  box-shadow: 0 0 12px rgba(212,175,55,0.2);
+}
+
+.cursor-trail {
+  position: fixed;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99997;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* Cursor States */
+.cursor-dot.cursor-hover {
+  width: 12px;
+  height: 12px;
+  background: var(--gold);
+}
+
+.cursor-ring.cursor-hover {
+  width: 60px;
+  height: 60px;
+  border-color: var(--gold);
+  box-shadow: 0 0 25px var(--gold-glow);
+}
+
+.cursor-dot.cursor-link {
+  background: var(--gold);
+}
+
+.cursor-ring.cursor-link {
+  width: 50px;
+  height: 50px;
+  border-color: rgba(212,175,55,0.8);
+}
+
+.cursor-dot.cursor-image {
+  width: 6px;
+  height: 6px;
+}
+
+.cursor-ring.cursor-image {
+  width: 70px;
+  height: 70px;
+  border-color: rgba(212,175,55,0.5);
+  border-style: dashed;
+}
+
+/* Mythological Icon Tooltip */
+.cursor-myth-icon {
+  position: fixed;
+  font-size: 1.2rem;
+  pointer-events: none;
+  z-index: 100000;
+  opacity: 0;
+  transform: translate(-50%, calc(-50% - 30px)) scale(0);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  filter: drop-shadow(0 0 6px var(--gold));
+  color: var(--gold);
+}
+
+.cursor-myth-icon.visible {
+  opacity: 1;
+  transform: translate(-50%, calc(-50% - 30px)) scale(1);
+}
+
+/* Hide default cursor everywhere */
+*, *::before, *::after {
+  cursor: none !important;
+}
+
+/* Re-enable on touch */
+.touch-device *, 
+.touch-device *::before, 
+.touch-device *::after {
+  cursor: auto !important;
+}
+
+.touch-device .cursor-dot,
+.touch-device .cursor-ring,
+.touch-device .cursor-myth-icon {
+  display: none !important;
+}
+
+/* Card hover — subtle larger ring */
+.cursor-ring.cursor-card {
+  width: 55px;
+  height: 55px;
+  border-color: rgba(212,175,55,0.5);
+  box-shadow: 0 0 20px rgba(212,175,55,0.15);
+}
+
+/* Trail particle base */
+.cursor-trail {
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99996;
+  transform: translate(-50%, -50%) scale(1);
+  transition: transform 0.15s ease, opacity 0.2s ease;
+  will-change: left, top, opacity;
+}

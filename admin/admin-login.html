@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Login — ZEAL</title>
+
+  <!-- Anti-flash: apply saved theme BEFORE render -->
+  <script>
+    (function () {
+      var t = localStorage.getItem('zeal-login-theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Poppins:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <style>
+/* ╔══════════════════════════════════════════════════════════╗
+   ║  ZEAL Admin Login — v3.0                                ║
+   ║  Full dual-theme + premium animations                   ║
+   ╚══════════════════════════════════════════════════════════╝ */
+
+/* ─── RESET ───────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ─── CONSTANTS ───────────────────────────────────────────── */
+:root {
+  --gold:         #D4AF37;
+  --gold-dim:     #B08D57;
+  --gold-pale:    #EDD87A;
+  --gold-glow:    rgba(212, 175, 55, 0.35);
+  --gold-line:    rgba(212, 175, 55, 0.28);
+  --gold-subtle:  rgba(212, 175, 55, 0.10);
+
+  --green:        #2DD4A0;
+  --red:          #E05C6A;
+
+  --ease-out:    cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64,  1);
+  --ease-back:   cubic-bezier(0.68,-0.55, 0.27, 1.55);
+
+  --theme-speed: 0.5s;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   DARK THEME  (default)
+═══════════════════════════════════════════════════════════ */
+[data-theme="dark"] {
+  --bg:             #06060D;
+  --bg-secondary:   #0D0D18;
+  --bg-card:        rgba(12, 12, 22, 0.88);
+  --bg-input:       rgba(255,255,255, 0.04);
+  --bg-input-focus: rgba(212,175,55,  0.05);
+  --text-hi:    #F2F2FA;
+  --text-mid:   #8888A8;
+  --text-lo:    #42425A;
+  --text-label: #8888A8;
+  --border:       rgba(255,255,255, 0.07);
+  --border-hi:    rgba(255,255,255, 0.13);
+  --border-focus: rgba(212,175,55,  0.55);
+  --border-err:   rgba(224, 92,106, 0.70);
+  --card-shadow:  0 28px 90px rgba(0,0,0,0.75), 0 0 0 1px rgba(212,175,55,0.07);
+  --card-glow:    rgba(212,175,55,0.07);
+  --grid-color:   rgba(255,255,255, 0.04);
+  --rune-color:   rgba(212,175,55,  0.22);
+  --glow-center:  rgba(212,175,55,  0.10);
+  --toggle-track: #1A1A2E;
+  --toggle-knob:  #2A2A42;
+  --placeholder:  rgba(255,255,255, 0.20);
+  --scrollbar:    #1A1A2E;
+  --canvas-line:  rgba(212,175,55, 0.15);
+  --canvas-dot:   rgba(212,175,55, 0.65);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   LIGHT THEME
+═══════════════════════════════════════════════════════════ */
+[data-theme="light"] {
+  --bg:             #EEF0F7;
+  --bg-secondary:   #E4E6F0;
+  --bg-card:        rgba(255,255,255, 0.92);
+  --bg-input:       rgba(0,0,0, 0.03);
+  --bg-input-focus: rgba(155,120,20, 0.05);
+  --text-hi:    #12122A;
+  --text-mid:   #52527A;
+  --text-lo:    #A0A0C0;
+  --text-label: #52527A;
+  --border:       rgba(0,0,0, 0.09);
+  --border-hi:    rgba(0,0,0, 0.15);
+  --border-focus: rgba(155,120,20, 0.65);
+  --border-err:   rgba(180, 50, 60, 0.70);
+  --card-shadow:  0 28px 90px rgba(0,0,0,0.14), 0 0 0 1px rgba(155,120,20,0.12);
+  --card-glow:    rgba(155,120,20,0.06);
+  --grid-color:   rgba(0,0,0, 0.05);
+  --rune-color:   rgba(155,120,20, 0.20);
+  --glow-center:  rgba(155,120,20, 0.08);
+  --toggle-track: #D8D8EE;
+  --toggle-knob:  #FFFFFF;
+  --placeholder:  rgba(0,0,0, 0.28);
+  --scrollbar:    #D0D0E8;
+  --canvas-line:  rgba(155,120,20, 0.12);
+  --canvas-dot:   rgba(155,120,20, 0.50);
+  --gold:         #9A7820;
+  --gold-dim:     #7A5E18;
+  --gold-pale:    #C9A030;
+  --gold-glow:    rgba(155,120,20, 0.30);
+  --gold-line:    rgba(155,120,20, 0.25);
+  --gold-subtle:  rgba(155,120,20, 0.10);
+}
+
+/* ─── GLOBAL THEME TRANSITION ─────────────────────────────── */
+html {
+  height: 100%;
+  transition: background-color var(--theme-speed) ease, color var(--theme-speed) ease;
+}
+
+body {
+  height: 100%;
+  font-family: 'Poppins', sans-serif;
+  background: var(--bg);
+  color: var(--text-hi);
+  overflow: hidden;
+  transition: background-color var(--theme-speed) ease, color var(--theme-speed) ease;
+}
+
+*, *::before, *::after {
+  transition-property: background-color, border-color, color, box-shadow, opacity;
+  transition-duration: var(--theme-speed);
+  transition-timing-function: ease;
+}
+
+.login-card, .login-btn, .pass-toggle, .theme-toggle, .field-input,
+.rune, .particle, [class*="corner"], .brand-emblem, .emblem-orbit, .center-glow {
+  transition-property: background-color, border-color, color, box-shadow, opacity, transform, filter;
+  transition-timing-function: ease, ease, ease, ease, ease, cubic-bezier(0.25,0.46,0.45,0.94), ease;
+  transition-duration: var(--theme-speed), var(--theme-speed), var(--theme-speed),
+                       var(--theme-speed), var(--theme-speed), 0.25s, 0.25s;
+}
+
+/* ─── CANVAS ──────────────────────────────────────────────── */
+#bg-canvas { position: fixed; inset: 0; z-index: 0; pointer-events: none; transition: opacity var(--theme-speed) ease; }
+
+/* ─── GRID ────────────────────────────────────────────────── */
+.grid-overlay {
+  position: fixed; inset: 0; z-index: 1; pointer-events: none;
+  background-image: linear-gradient(var(--grid-color) 1px, transparent 1px), linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, rgba(0,0,0,0.55) 0%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, rgba(0,0,0,0.55) 0%, transparent 100%);
+}
+
+/* ─── FLOATING RUNES ──────────────────────────────────────── */
+.rune {
+  position: fixed; font-family: 'Cinzel', serif; color: var(--rune-color);
+  pointer-events: none; z-index: 1; user-select: none;
+  animation: runeDrift linear infinite; transition-property: color; transition-duration: var(--theme-speed);
+}
+@keyframes runeDrift {
+  0%   { transform: translateY(0) rotate(0deg); opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 0.55; }
+  100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
+}
+
+/* ─── CORNERS ─────────────────────────────────────────────── */
+.corner {
+  position: fixed; width: 120px; height: 120px;
+  pointer-events: none; z-index: 2; opacity: 0;
+  animation: cornerReveal 1.2s var(--ease-out) forwards;
+}
+.corner svg { width: 100%; height: 100%; }
+.corner--tl { top: 20px; left: 20px; }
+.corner--tr { top: 20px; right: 20px; transform: scaleX(-1); animation-delay: .05s; }
+.corner--bl { bottom: 20px; left: 20px; transform: scaleY(-1); animation-delay: .10s; }
+.corner--br { bottom: 20px; right: 20px; transform: scale(-1); animation-delay: .15s; }
+@keyframes cornerReveal { from { opacity: 0; transform: scale(0.82); } to { opacity: 1; transform: scale(1); } }
+.corner-path { stroke: var(--gold); transition: stroke var(--theme-speed) ease; }
+.corner-dot  { fill:   var(--gold); transition: fill   var(--theme-speed) ease; }
+.corner-dim  { stroke: var(--gold); opacity: 0.4; transition: stroke var(--theme-speed) ease; }
+.corner-faint{ stroke: var(--gold); opacity: 0.18; transition: stroke var(--theme-speed) ease; }
+
+/* ─── CENTRE GLOW ─────────────────────────────────────────── */
+.center-glow {
+  position: fixed; top: 50%; left: 50%; width: 700px; height: 500px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(ellipse at center, var(--glow-center) 0%, transparent 70%);
+  pointer-events: none; z-index: 1; animation: glowPulse 4s ease-in-out infinite;
+}
+@keyframes glowPulse {
+  0%, 100% { opacity: 0.75; transform: translate(-50%,-50%) scale(1); }
+  50%       { opacity: 1;    transform: translate(-50%,-50%) scale(1.09); }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   THEME TOGGLE BUTTON
+═══════════════════════════════════════════════════════════ */
+.theme-toggle {
+  position: fixed; top: 22px; right: 24px; z-index: 100;
+  cursor: pointer; border: none; padding: 0; background: none; outline: none;
+  display: flex; align-items: center; gap: 10px;
+  opacity: 0; animation: fadeUp 0.7s var(--ease-out) 0.2s forwards;
+}
+.toggle-track {
+  width: 56px; height: 28px; border-radius: 14px;
+  background: var(--toggle-track); border: 1px solid var(--border-hi);
+  position: relative; transition: background var(--theme-speed) ease, border-color var(--theme-speed) ease, box-shadow 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}
+.theme-toggle:hover .toggle-track { border-color: var(--gold); box-shadow: 0 0 0 3px var(--gold-subtle), 0 2px 8px rgba(0,0,0,0.25); }
+.toggle-knob {
+  position: absolute; top: 3px; left: 3px; width: 20px; height: 20px;
+  border-radius: 50%; background: var(--toggle-knob); box-shadow: 0 2px 6px rgba(0,0,0,0.35);
+  display: flex; align-items: center; justify-content: center;
+  transition: transform 0.45s var(--ease-spring), background var(--theme-speed) ease, box-shadow 0.25s ease;
+}
+[data-theme="dark"]  .toggle-knob { transform: translateX(0px); background: linear-gradient(135deg, #2A2A44, #1E1E34); }
+[data-theme="light"] .toggle-knob { transform: translateX(28px); background: linear-gradient(135deg, #FFF8E8, #FFE88A); box-shadow: 0 2px 8px rgba(212,175,55,0.45); }
+[data-theme="dark"]  .toggle-track { background: #1A1A32; }
+[data-theme="light"] .toggle-track { background: linear-gradient(135deg, #E8D070, #C9A030); border-color: rgba(155,120,20,0.4); }
+.knob-icon { position: absolute; width: 11px; height: 11px; transition: opacity 0.3s ease, transform 0.4s var(--ease-spring); }
+.knob-sun  { opacity: 0; transform: rotate(-90deg) scale(0.5); }
+.knob-moon { opacity: 1; transform: rotate(0deg)   scale(1);   }
+[data-theme="light"] .knob-sun  { opacity: 1; transform: rotate(0deg)   scale(1);   }
+[data-theme="light"] .knob-moon { opacity: 0; transform: rotate(90deg)  scale(0.5); }
+.toggle-label {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--text-mid); font-family: 'JetBrains Mono', monospace;
+  transition: color var(--theme-speed) ease; user-select: none; min-width: 32px;
+}
+.toggle-track::after {
+  content: ''; position: absolute; inset: -4px; border-radius: 18px;
+  border: 2px solid var(--gold); opacity: 0; transform: scale(0.9);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.theme-toggle:active .toggle-track::after { opacity: 0.4; transform: scale(1.05); }
+
+/* ─── THEME FLASH ─────────────────────────────────────────── */
+.theme-flash {
+  position: fixed; inset: 0; z-index: 9990; pointer-events: none; opacity: 0;
+  background: radial-gradient(circle at var(--flash-x, 50%) var(--flash-y, 10%), rgba(212,175,55,0.25) 0%, transparent 70%);
+  transition: opacity 0.5s ease;
+}
+.theme-flash.active { opacity: 1; }
+
+/* ─── LAYOUT ──────────────────────────────────────────────── */
+.login-wrapper {
+  position: relative; z-index: 10; width: 100%; height: 100vh;
+  display: flex; align-items: center; justify-content: center; padding: 20px;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   LOGIN CARD
+═══════════════════════════════════════════════════════════ */
+.login-card {
+  width: 100%; max-width: 440px;
+  background: var(--bg-card); border: 1px solid var(--gold-line);
+  border-radius: 22px; padding: 50px 46px 46px;
+  backdrop-filter: blur(28px) saturate(1.5); -webkit-backdrop-filter: blur(28px) saturate(1.5);
+  box-shadow: var(--card-shadow); position: relative; overflow: hidden;
+  opacity: 0; transform: translateY(36px) scale(0.95);
+  animation: cardReveal 0.95s var(--ease-spring) 0.3s forwards;
+}
+@keyframes cardReveal { to { opacity: 1; transform: translateY(0) scale(1); } }
+.login-card::before {
+  content: ''; position: absolute; top: 0; left: 8%; right: 8%; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-dim), var(--gold), var(--gold-dim), transparent);
+  animation: shimmerLine 3.5s ease-in-out infinite;
+}
+@keyframes shimmerLine {
+  0%, 100% { opacity: 0.35; transform: scaleX(0.85); }
+  50%       { opacity: 1;    transform: scaleX(1); }
+}
+.login-card::after {
+  content: ''; position: absolute; bottom: -90px; left: 50%; transform: translateX(-50%);
+  width: 320px; height: 200px; background: radial-gradient(ellipse, var(--card-glow), transparent 70%); pointer-events: none;
+}
+
+/* ─── BRAND ───────────────────────────────────────────────── */
+.card-brand { text-align: center; margin-bottom: 34px; opacity: 0; animation: fadeUp 0.7s var(--ease-out) 0.56s forwards; }
+.brand-emblem {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 68px; height: 68px; border-radius: 18px;
+  background: linear-gradient(135deg, var(--gold-subtle), rgba(212,175,55,0.04));
+  border: 1px solid var(--gold-line); margin-bottom: 18px; position: relative;
+  animation: emblemPulse 3.5s ease-in-out infinite 1.8s;
+}
+@keyframes emblemPulse {
+  0%, 100% { box-shadow: 0 0 18px var(--gold-subtle); }
+  50%       { box-shadow: 0 0 40px var(--gold-glow);  }
+}
+.brand-emblem svg { width: 32px; height: 32px; fill: var(--gold); filter: drop-shadow(0 0 10px var(--gold-glow)); }
+.emblem-orbit {
+  position: absolute; inset: -9px; border-radius: 22px;
+  border: 1px dashed var(--gold-line); animation: orbitSpin 8s linear infinite;
+}
+.emblem-orbit::after {
+  content: ''; position: absolute; top: -3px; left: 50%;
+  width: 6px; height: 6px; margin-left: -3px; background: var(--gold);
+  border-radius: 50%; box-shadow: 0 0 10px var(--gold-glow);
+}
+@keyframes orbitSpin { to { transform: rotate(360deg); } }
+.brand-name { font-family: 'Cinzel', serif; font-size: 30px; font-weight: 700; letter-spacing: 0.32em; color: var(--gold); text-shadow: 0 0 32px var(--gold-glow); line-height: 1; }
+.brand-sub  { font-size: 10.5px; font-weight: 500; letter-spacing: 0.28em; text-transform: uppercase; color: var(--text-mid); margin-top: 6px; }
+.brand-divider { width: 64px; height: 1px; background: linear-gradient(90deg, transparent, var(--gold-dim), transparent); margin: 14px auto 0; }
+
+/* ─── HEADING ─────────────────────────────────────────────── */
+.form-heading { text-align: center; margin-bottom: 30px; opacity: 0; animation: fadeUp 0.7s var(--ease-out) 0.68s forwards; }
+.form-heading h2 { font-size: 13.5px; font-weight: 500; color: var(--text-mid); letter-spacing: 0.08em; }
+
+/* ═══════════════════════════════════════════════════════════
+   FORM FIELD
+═══════════════════════════════════════════════════════════ */
+.field-group { margin-bottom: 22px; opacity: 0; }
+.field-group:nth-child(1) { animation: fadeUp 0.65s var(--ease-out) 0.76s forwards; }
+.field-group:nth-child(2) { animation: fadeUp 0.65s var(--ease-out) 0.86s forwards; }
+.field-label {
+  display: flex; align-items: center; gap: 7px; font-size: 10.5px; font-weight: 600;
+  letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-label);
+  margin-bottom: 9px; transition: color 0.3s ease;
+}
+.label-dot {
+  width: 5px; height: 5px; border-radius: 50%; background: var(--text-lo); flex-shrink: 0;
+  transition: background 0.3s ease, transform 0.3s var(--ease-spring), box-shadow 0.3s ease;
+}
+.field-wrap  { position: relative; border-radius: 12px; }
+.field-box   { position: absolute; inset: 0; border-radius: 12px; pointer-events: none; z-index: 0; }
+.field-box::before {
+  content: ''; position: absolute; inset: 0; border-radius: 12px;
+  border: 1px solid var(--border-hi); transition: opacity 0.3s ease, border-color var(--theme-speed) ease;
+}
+.field-box::after {
+  content: ''; position: absolute; inset: -1px; border-radius: 13px;
+  border: 1.5px solid var(--border-focus);
+  box-shadow: 0 0 0 3px var(--gold-subtle), 0 0 20px var(--gold-glow);
+  opacity: 0; transition: opacity 0.3s ease, box-shadow var(--theme-speed) ease, border-color var(--theme-speed) ease;
+}
+.field-scan {
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: 0; transform: translateY(0); transition: none; pointer-events: none; z-index: 3; border-radius: 12px 12px 0 0;
+}
+.field-icon {
+  position: absolute; top: 50%; left: 16px; transform: translateY(-50%);
+  color: var(--text-lo); font-size: 15px; z-index: 2; pointer-events: none; display: flex;
+  transition: color 0.3s ease, transform 0.3s var(--ease-spring);
+}
+.field-input {
+  position: relative; z-index: 1; width: 100%; background: var(--bg-input);
+  border: none; border-radius: 12px; padding: 15px 50px 15px 46px;
+  font-family: 'Poppins', sans-serif; font-size: 14px; color: var(--text-hi); outline: none;
+  caret-color: var(--gold); transition: background var(--theme-speed) ease, color var(--theme-speed) ease;
+}
+.field-input::placeholder { color: var(--placeholder); font-size: 13px; transition: opacity 0.3s ease, transform 0.3s ease, color var(--theme-speed) ease; }
+.field-hint { position: absolute; right: 14px; bottom: -20px; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-lo); opacity: 0; transition: opacity 0.25s ease, color var(--theme-speed) ease; pointer-events: none; }
+.field-typing { position: absolute; right: 50px; top: 50%; transform: translateY(-50%); display: flex; gap: 3px; opacity: 0; transition: opacity 0.2s ease; z-index: 2; pointer-events: none; }
+.field-typing span { width: 4px; height: 4px; border-radius: 50%; background: var(--gold); animation: typingBounce 0.9s ease-in-out infinite; }
+.field-typing span:nth-child(2) { animation-delay: 0.15s; }
+.field-typing span:nth-child(3) { animation-delay: 0.30s; }
+@keyframes typingBounce { 0%, 80%, 100% { transform: scale(0.5); opacity: 0.4; } 40% { transform: scale(1); opacity: 1; } }
+.pass-toggle {
+  position: absolute; top: 50%; right: 14px; transform: translateY(-50%);
+  background: none; border: none; color: var(--text-lo); cursor: pointer; font-size: 14px;
+  z-index: 2; padding: 5px; border-radius: 6px; display: flex;
+  transition: color 0.2s ease, transform 0.2s var(--ease-spring);
+}
+.pass-toggle:hover { color: var(--gold); transform: translateY(-50%) scale(1.15); }
+
+/* ── FOCUSED STATE ── */
+.field-group.focused .field-label { color: var(--gold); }
+.field-group.focused .label-dot   { background: var(--gold); transform: scale(1.4); box-shadow: 0 0 6px var(--gold-glow); }
+.field-group.focused .field-box::before { opacity: 0; }
+.field-group.focused .field-box::after  { opacity: 1; }
+.field-group.focused .field-icon  { color: var(--gold); transform: translateY(-50%) scale(1.12); }
+.field-group.focused .field-input { background: var(--bg-input-focus); }
+.field-group.focused .field-input::placeholder { opacity: 0.5; transform: translateX(4px); }
+.field-group.focused .field-scan  { animation: scanLine 1.8s ease-in-out infinite; }
+.field-group.focused .field-hint  { opacity: 0.8; }
+@keyframes scanLine { 0% { top: 0; opacity: 0; } 10% { opacity: 0.7; } 80% { opacity: 0.4; } 100% { top: calc(100% - 1px); opacity: 0; } }
+
+/* ── FILLED STATE ── */
+.field-group.filled .field-label { color: var(--gold); }
+.field-group.filled .label-dot   { background: var(--gold); }
+
+/* ── TYPING STATE ── */
+.field-group.typing .field-typing { opacity: 1; }
+
+/* ── ERROR STATE ── */
+.field-group.errored .field-label      { color: var(--red); }
+.field-group.errored .label-dot        { background: var(--red); }
+.field-group.errored .field-box::before { border-color: var(--border-err); }
+.field-group.errored .field-icon       { color: var(--red); }
+.field-error {
+  display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--red);
+  margin-top: 7px; overflow: hidden; max-height: 0; opacity: 0; transform: translateY(-6px);
+  transition: max-height 0.3s ease, opacity 0.3s ease, transform 0.3s ease, color var(--theme-speed) ease;
+}
+.field-error.visible { max-height: 24px; opacity: 1; transform: translateY(0); }
+
+/* ── VALID STATE ── */
+.field-group.valid .field-label { color: var(--green); }
+.field-group.valid .label-dot   { background: var(--green); }
+.field-group.valid .field-icon  { color: var(--green); }
+.field-group.valid .field-box::after { opacity: 1; border-color: rgba(45,212,160,0.55); box-shadow: 0 0 0 3px rgba(45,212,160,0.08), 0 0 16px rgba(45,212,160,0.15); }
+.valid-badge {
+  position: absolute; right: 14px; top: 50%; transform: translateY(-50%) scale(0);
+  color: var(--green); font-size: 14px; z-index: 2; pointer-events: none;
+  transition: transform 0.35s var(--ease-spring), opacity 0.25s ease; opacity: 0;
+}
+.field-group.valid .valid-badge { transform: translateY(-50%) scale(1); opacity: 1; }
+
+/* ─── SERVER ERROR BANNER ─────────────────────────────────── */
+.server-error-banner {
+  display: flex; align-items: center; gap: 10px;
+  background: rgba(224,92,106,0.10); border: 1px solid rgba(224,92,106,0.35);
+  border-radius: 10px; padding: 11px 14px; margin-bottom: 20px;
+  font-size: 12.5px; color: var(--red); opacity: 0; max-height: 0; overflow: hidden;
+  transition: opacity 0.3s ease, max-height 0.3s ease, margin 0.3s ease;
+}
+.server-error-banner.visible { opacity: 1; max-height: 60px; }
+
+/* ═══════════════════════════════════════════════════════════
+   EXTRAS ROW
+═══════════════════════════════════════════════════════════ */
+.extras-row {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 28px; opacity: 0; animation: fadeUp 0.65s var(--ease-out) 0.94s forwards;
+}
+.remember-label { display: flex; align-items: center; gap: 9px; cursor: pointer; font-size: 12.5px; color: var(--text-mid); user-select: none; }
+.remember-check {
+  width: 17px; height: 17px; border-radius: 5px; border: 1.5px solid var(--border-hi);
+  background: var(--bg-input); display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; cursor: pointer;
+  transition: border-color 0.25s ease, background 0.25s ease, transform 0.25s var(--ease-spring);
+}
+.remember-check:hover { border-color: var(--gold); transform: scale(1.1); }
+.remember-check.checked { border-color: var(--gold); background: linear-gradient(135deg, var(--gold-subtle), rgba(212,175,55,0.08)); transform: scale(1.08); }
+.check-mark { font-size: 10px; color: var(--gold); font-weight: 700; transform: scale(0); transition: transform 0.25s var(--ease-spring); }
+.remember-check.checked .check-mark { transform: scale(1); }
+.forgot-link { font-size: 12.5px; color: var(--text-mid); text-decoration: none; position: relative; transition: color 0.2s ease; }
+.forgot-link::after { content: ''; position: absolute; bottom: -1px; left: 0; right: 100%; height: 1px; background: var(--gold); transition: right 0.3s ease; }
+.forgot-link:hover { color: var(--gold); }
+.forgot-link:hover::after { right: 0; }
+
+/* ═══════════════════════════════════════════════════════════
+   LOGIN BUTTON
+═══════════════════════════════════════════════════════════ */
+.login-btn-wrap { opacity: 0; animation: fadeUp 0.65s var(--ease-out) 1.02s forwards; }
+.login-btn {
+  width: 100%; padding: 16px 24px; border: none; border-radius: 13px; cursor: pointer;
+  font-family: 'Cinzel', serif; font-size: 13px; font-weight: 600; letter-spacing: 0.26em;
+  text-transform: uppercase; color: #08080E; position: relative; overflow: hidden;
+  background: linear-gradient(135deg, var(--gold-pale) 0%, var(--gold) 45%, var(--gold-dim) 100%);
+  box-shadow: 0 4px 28px var(--gold-glow), 0 1px 0 rgba(255,255,255,0.2) inset;
+}
+.login-btn::before {
+  content: ''; position: absolute; top: 0; left: -110%; width: 60%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.38), transparent);
+  transform: skewX(-20deg); transition: left 0.65s ease;
+}
+.login-btn:hover::before { left: 150%; }
+.login-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 40px var(--gold-glow), 0 1px 0 rgba(255,255,255,0.3) inset; }
+.login-btn:active { transform: translateY(0) scale(0.99); }
+.login-btn.loading { pointer-events: none; color: transparent; }
+.btn-text { position: relative; z-index: 1; }
+.btn-spinner {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+  width: 20px; height: 20px; border: 2px solid rgba(8,8,14,0.25); border-top-color: #08080E;
+  border-radius: 50%; animation: spin 0.7s linear infinite; display: none;
+}
+.login-btn.loading .btn-spinner { display: block; }
+@keyframes spin { to { transform: translate(-50%,-50%) rotate(360deg); } }
+
+/* ─── SUCCESS OVERLAY ─────────────────────────────────────── */
+.success-overlay {
+  position: absolute; inset: 0; border-radius: 22px; background: var(--bg-card);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 16px; opacity: 0; pointer-events: none;
+  transition: opacity 0.4s ease, background var(--theme-speed) ease; z-index: 20;
+}
+.success-overlay.visible { opacity: 1; pointer-events: all; }
+.success-check {
+  width: 74px; height: 74px; border-radius: 50%; background: rgba(45,212,160,0.1);
+  border: 1px solid rgba(45,212,160,0.4); display: flex; align-items: center; justify-content: center;
+  font-size: 32px; color: var(--green); box-shadow: 0 0 36px rgba(45,212,160,0.2);
+  animation: checkBounce 0.55s var(--ease-spring) both;
+}
+@keyframes checkBounce { from { transform: scale(0.4); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.success-text { font-family: 'Cinzel', serif; font-size: 15px; letter-spacing: 0.16em; color: var(--text-hi); }
+.success-sub  { font-size: 12px; color: var(--text-mid); letter-spacing: 0.07em; font-family: 'JetBrains Mono', monospace; }
+
+/* ─── ERROR SHAKE ─────────────────────────────────────────── */
+@keyframes shake {
+  0%,100% { transform: translateX(0); } 18% { transform: translateX(-9px); }
+  36%     { transform: translateX(9px); }  54% { transform: translateX(-6px); }
+  72%     { transform: translateX(6px); }  88% { transform: translateX(-3px); }
+}
+.login-card.shake { animation: shake 0.48s ease both; }
+
+/* ─── CARD FOOTER ─────────────────────────────────────────── */
+.card-foot {
+  text-align: center; margin-top: 26px; font-size: 11px; color: var(--text-lo);
+  letter-spacing: 0.09em; opacity: 0; animation: fadeUp 0.65s var(--ease-out) 1.12s forwards;
+}
+
+/* ─── PARTICLES ───────────────────────────────────────────── */
+.particle { position: fixed; border-radius: 50%; background: var(--gold); pointer-events: none; z-index: 9980; }
+
+/* ─── SHARED KEYFRAMES ────────────────────────────────────── */
+@keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ─── RESPONSIVE ──────────────────────────────────────────── */
+@media (max-width: 500px) {
+  .login-card { padding: 36px 28px 32px; }
+  .brand-name { font-size: 26px; }
+  .corner     { width: 80px; height: 80px; }
+  .theme-toggle { top: 14px; right: 14px; }
+}
+  </style>
+</head>
+
+<body>
+
+<!-- Canvas background -->
+<canvas id="bg-canvas"></canvas>
+<div class="grid-overlay" aria-hidden="true"></div>
+<div class="center-glow"  aria-hidden="true"></div>
+<div class="theme-flash"  id="theme-flash" aria-hidden="true"></div>
+
+<!-- Corner ornaments -->
+<div class="corner corner--tl" aria-hidden="true">
+  <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M10 110 L10 10 L110 10" class="corner-dim"   stroke-width="1" stroke-dasharray="4 4"/>
+    <path d="M10 10 L34 10"          class="corner-path"  stroke-width="2"/>
+    <path d="M10 10 L10 34"          class="corner-path"  stroke-width="2"/>
+    <circle cx="10" cy="10" r="3.5"  class="corner-dot"/>
+    <circle cx="46" cy="10" r="1.5"  class="corner-dot" opacity="0.4"/>
+    <circle cx="10" cy="46" r="1.5"  class="corner-dot" opacity="0.4"/>
+    <path d="M22 22 L52 22 M22 22 L22 52" class="corner-faint" stroke-width="0.5"/>
+  </svg>
+</div>
+<div class="corner corner--tr" aria-hidden="true">
+  <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M10 110 L10 10 L110 10" class="corner-dim"  stroke-width="1" stroke-dasharray="4 4"/>
+    <path d="M10 10 L34 10"          class="corner-path" stroke-width="2"/>
+    <path d="M10 10 L10 34"          class="corner-path" stroke-width="2"/>
+    <circle cx="10" cy="10" r="3.5"  class="corner-dot"/>
+    <circle cx="46" cy="10" r="1.5"  class="corner-dot" opacity="0.4"/>
+    <circle cx="10" cy="46" r="1.5"  class="corner-dot" opacity="0.4"/>
+  </svg>
+</div>
+<div class="corner corner--bl" aria-hidden="true">
+  <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M10 110 L10 10 L110 10" class="corner-dim"  stroke-width="1" stroke-dasharray="4 4"/>
+    <path d="M10 10 L34 10"          class="corner-path" stroke-width="2"/>
+    <path d="M10 10 L10 34"          class="corner-path" stroke-width="2"/>
+    <circle cx="10" cy="10" r="3.5"  class="corner-dot"/>
+  </svg>
+</div>
+<div class="corner corner--br" aria-hidden="true">
+  <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M10 110 L10 10 L110 10" class="corner-dim"  stroke-width="1" stroke-dasharray="4 4"/>
+    <path d="M10 10 L34 10"          class="corner-path" stroke-width="2"/>
+    <path d="M10 10 L10 34"          class="corner-path" stroke-width="2"/>
+    <circle cx="10" cy="10" r="3.5"  class="corner-dot"/>
+  </svg>
+</div>
+
+<!-- Theme Toggle -->
+<button class="theme-toggle" id="theme-toggle" aria-label="Toggle light/dark theme">
+  <span class="toggle-label" id="toggle-label">DARK</span>
+  <div class="toggle-track">
+    <div class="toggle-knob">
+      <svg class="knob-icon knob-moon" viewBox="0 0 24 24" fill="currentColor" style="color:#9090C8">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+      <svg class="knob-icon knob-sun" viewBox="0 0 24 24" fill="currentColor" style="color:#C9A030">
+        <circle cx="12" cy="12" r="4"/>
+        <path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+        <style>path{stroke:currentColor;stroke-width:2;stroke-linecap:round;fill:none}circle{stroke:none}</style>
+      </svg>
+    </div>
+  </div>
+</button>
+
+<!-- Login Card -->
+<div class="login-wrapper">
+  <div class="login-card" id="login-card" role="main">
+
+    <!-- Success overlay -->
+    <div class="success-overlay" id="success-overlay" aria-live="polite">
+      <div class="success-check">✓</div>
+      <div class="success-text">ACCESS GRANTED</div>
+      <div class="success-sub">Redirecting to dashboard…</div>
+    </div>
+
+    <!-- Brand -->
+    <div class="card-brand">
+      <div class="brand-emblem">
+        <div class="emblem-orbit" aria-hidden="true"></div>
+        <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M16 2 L18.5 12 L28 8 L21 16 L28 24 L18.5 20 L16 30 L13.5 20 L4 24 L11 16 L4 8 L13.5 12 Z"/>
+        </svg>
+      </div>
+      <div class="brand-name">ZEAL</div>
+      <div class="brand-sub">Cultural Festival</div>
+      <div class="brand-divider"></div>
+    </div>
+
+    <!-- Sub-heading -->
+    <div class="form-heading"><h2>Admin Access Portal</h2></div>
+
+    <!-- Server error banner -->
+    <div class="server-error-banner" id="server-error-banner" role="alert">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0">
+        <path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+      </svg>
+      <span id="server-error-text">Invalid credentials. Please try again.</span>
+    </div>
+
+    <!-- Form -->
+    <form id="login-form" novalidate autocomplete="off">
+
+      <!-- Email -->
+      <div class="field-group" id="email-group">
+        <label class="field-label" for="email-input">
+          <span class="label-dot"></span>
+          Email Address
+        </label>
+        <div class="field-wrap">
+          <div class="field-box"></div>
+          <div class="field-scan"></div>
+          <span class="field-icon" aria-hidden="true">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="4" width="20" height="16" rx="2"/>
+              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+            </svg>
+          </span>
+          <input class="field-input" id="email-input" type="email"
+            placeholder="admin@zeal.edu.in" autocomplete="email" spellcheck="false" />
+          <div class="field-typing" aria-hidden="true"><span></span><span></span><span></span></div>
+          <div class="valid-badge" aria-hidden="true">✓</div>
+          <div class="field-hint" id="email-hint">Press Enter to continue</div>
+        </div>
+        <div class="field-error" id="email-error" role="alert">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+          <span id="email-error-text">Please enter a valid email.</span>
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div class="field-group" id="pass-group">
+        <label class="field-label" for="pass-input">
+          <span class="label-dot"></span>
+          Password
+        </label>
+        <div class="field-wrap">
+          <div class="field-box"></div>
+          <div class="field-scan"></div>
+          <span class="field-icon" aria-hidden="true">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+          </span>
+          <input class="field-input" id="pass-input" type="password"
+            placeholder="Enter your password" autocomplete="current-password" />
+          <div class="field-typing" aria-hidden="true"><span></span><span></span><span></span></div>
+          <button type="button" class="pass-toggle" id="pass-toggle" aria-label="Toggle password">
+            <svg id="eye-open"   width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+            <svg id="eye-closed" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+          </button>
+          <div class="field-hint" id="pass-hint">Min. 6 characters</div>
+        </div>
+        <div class="field-error" id="pass-error" role="alert">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+          <span id="pass-error-text">Password is required.</span>
+        </div>
+      </div>
+
+      <!-- Extras -->
+      <div class="extras-row">
+        <label class="remember-label">
+          <div class="remember-check" id="remember-check" role="checkbox" aria-checked="false" tabindex="0">
+            <span class="check-mark">✓</span>
+          </div>
+          Remember me
+        </label>
+        <a href="#" class="forgot-link">Forgot password?</a>
+      </div>
+
+      <!-- Button -->
+      <div class="login-btn-wrap">
+        <button type="submit" class="login-btn" id="login-btn">
+          <span class="btn-text">Enter Dashboard</span>
+          <div class="btn-spinner" aria-hidden="true"></div>
+        </button>
+      </div>
+    </form>
+
+    <div class="card-foot">ZEAL Admin &nbsp;·&nbsp; Authorized Access Only</div>
+  </div>
+</div>
+
+<!-- Load api.js for Auth + AdminAPI -->
+<script src="js/api.js"></script>
+
+<script>
+/* ── Redirect if already logged in ───────────────────── */
+if (typeof Auth !== 'undefined' && Auth.isLoggedIn()) {
+  window.location.href = 'admin-dashboard.html';
+}
+
+/* ════════════════════════════════════════════════════════════
+   CANVAS — constellation of gold particles
+════════════════════════════════════════════════════════════ */
+(function () {
+  const canvas = document.getElementById('bg-canvas');
+  const ctx    = canvas.getContext('2d');
+  let W, H, nodes = [];
+
+  function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+
+  function Node() {
+    this.x  = Math.random() * W; this.y  = Math.random() * H;
+    this.vx = (Math.random() - 0.5) * 0.32; this.vy = (Math.random() - 0.5) * 0.32;
+    this.r  = Math.random() * 1.5 + 0.5; this.a  = Math.random() * 0.8 + 0.2;
+  }
+  Node.prototype.update = function () {
+    this.x += this.vx; this.y += this.vy;
+    if (this.x < 0 || this.x > W) this.vx *= -1;
+    if (this.y < 0 || this.y > H) this.vy *= -1;
+  };
+
+  function getThemeColors() {
+    const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+    return { line: isLight ? 'rgba(155,120,20,' : 'rgba(212,175,55,', dot: isLight ? 'rgba(155,120,20,' : 'rgba(212,175,55,' };
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    const c = getThemeColors();
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        const dx = nodes[i].x - nodes[j].x, dy = nodes[i].y - nodes[j].y;
+        const d  = Math.sqrt(dx * dx + dy * dy);
+        if (d < 140) {
+          ctx.beginPath(); ctx.moveTo(nodes[i].x, nodes[i].y); ctx.lineTo(nodes[j].x, nodes[j].y);
+          ctx.strokeStyle = c.line + ((1 - d / 140) * 0.16) + ')'; ctx.lineWidth = 0.6; ctx.stroke();
+        }
+      }
+      nodes[i].update();
+      ctx.beginPath(); ctx.arc(nodes[i].x, nodes[i].y, nodes[i].r, 0, Math.PI * 2);
+      ctx.fillStyle = c.dot + (nodes[i].a * 0.7) + ')'; ctx.fill();
+    }
+    requestAnimationFrame(draw);
+  }
+
+  function init() { nodes = []; const count = Math.min(Math.floor((W * H) / 13000), 80); for (let i = 0; i < count; i++) nodes.push(new Node()); }
+  resize(); init(); draw();
+  window.addEventListener('resize', () => { resize(); init(); });
+})();
+
+/* ════════════════════════════════════════════════════════════
+   FLOATING RUNES
+════════════════════════════════════════════════════════════ */
+(function () {
+  const glyphs = ['Z','E','A','L','✦','◈','⊕','✧','⟡','⬡','◇','⟢','✶','⋆'];
+  function spawn() {
+    const el = document.createElement('div');
+    el.className = 'rune';
+    el.textContent = glyphs[Math.floor(Math.random() * glyphs.length)];
+    const size = Math.random() * 16 + 10;
+    el.style.cssText = `left:${Math.random()*100}vw;bottom:-50px;font-size:${size}px;opacity:0;animation-duration:${Math.random()*14+12}s;animation-delay:${Math.random()*3}s;filter:blur(${Math.random()>0.7?0:0.7}px);`;
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 22000);
+  }
+  for (let i = 0; i < 8; i++) setTimeout(spawn, i * 350);
+  setInterval(spawn, 2000);
+})();
+
+/* ════════════════════════════════════════════════════════════
+   THEME MANAGER
+════════════════════════════════════════════════════════════ */
+const ThemeManager = (() => {
+  const KEY = 'zeal-login-theme', DARK = 'dark', LIGHT = 'light';
+  const html = document.documentElement;
+  const btn  = document.getElementById('theme-toggle');
+  const label = document.getElementById('toggle-label');
+  const flash = document.getElementById('theme-flash');
+  let current = localStorage.getItem(KEY) || DARK, animating = false;
+
+  function apply(theme) {
+    current = theme; html.setAttribute('data-theme', theme);
+    localStorage.setItem(KEY, theme); label.textContent = theme === DARK ? 'DARK' : 'LIGHT';
+  }
+
+  function toggle() {
+    if (animating) return; animating = true;
+    const rect = btn.getBoundingClientRect();
+    flash.style.setProperty('--flash-x', ((rect.left + rect.width/2) / window.innerWidth * 100).toFixed(1) + '%');
+    flash.style.setProperty('--flash-y', ((rect.top + rect.height/2) / window.innerHeight * 100).toFixed(1) + '%');
+    flash.classList.add('active');
+    setTimeout(() => { apply(current === DARK ? LIGHT : DARK); flash.classList.remove('active'); animating = false; }, 280);
+  }
+
+  btn.addEventListener('click', toggle);
+  apply(current);
+  return { get: () => current };
+})();
+
+/* ════════════════════════════════════════════════════════════
+   FIELD INTERACTIONS
+════════════════════════════════════════════════════════════ */
+(function () {
+  document.querySelectorAll('.field-group').forEach(group => {
+    const input  = group.querySelector('.field-input');
+    const errorEl = group.querySelector('.field-error');
+    const hint   = group.querySelector('.field-hint');
+    let typingTimer = null;
+
+    function setFocused(on) {
+      group.classList.toggle('focused', on);
+      if (on) { group.classList.remove('errored', 'valid'); if (hint) hint.style.opacity = '0.7'; }
+      else    { if (hint) hint.style.opacity = '0'; validateField(group, false); }
+    }
+
+    input.addEventListener('focus', () => setFocused(true));
+    input.addEventListener('blur',  () => setFocused(false));
+    input.addEventListener('input', () => {
+      group.classList.add('typing');
+      clearTimeout(typingTimer);
+      typingTimer = setTimeout(() => group.classList.remove('typing'), 700);
+      group.classList.toggle('filled', input.value.length > 0);
+      group.classList.remove('errored', 'valid');
+      if (errorEl) errorEl.classList.remove('visible');
+      // Hide server error when user starts retyping
+      document.getElementById('server-error-banner').classList.remove('visible');
+    });
+    input.addEventListener('keydown', e => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        const groups = [...document.querySelectorAll('.field-group')];
+        const idx = groups.indexOf(group);
+        if (idx < groups.length - 1) groups[idx + 1].querySelector('.field-input').focus();
+        else document.getElementById('login-form').dispatchEvent(new Event('submit'));
+      }
+    });
+  });
+
+  window.validateField = function (group, showValid = true) {
+    const input   = group.querySelector('.field-input');
+    const errorEl = group.querySelector('.field-error');
+    const val = input.value.trim();
+    let ok = true, msg = '';
+
+    if (group.id === 'email-group') {
+      if (!val) { ok = false; msg = 'Email address is required.'; }
+      else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) { ok = false; msg = 'Enter a valid email address.'; }
+    } else if (group.id === 'pass-group') {
+      if (!val) { ok = false; msg = 'Password is required.'; }
+      else if (val.length < 6) { ok = false; msg = 'Must be at least 6 characters.'; }
+    }
+
+    if (!ok) {
+      group.classList.remove('valid', 'focused', 'filled'); group.classList.add('errored');
+      if (errorEl) { errorEl.querySelector('span').textContent = msg; errorEl.classList.add('visible'); }
+    } else if (showValid) {
+      group.classList.remove('errored', 'focused'); group.classList.add('valid', 'filled');
+      if (errorEl) errorEl.classList.remove('visible');
+    } else {
+      if (errorEl) errorEl.classList.remove('visible'); group.classList.remove('errored');
+    }
+    return ok;
+  };
+})();
+
+/* ════════════════════════════════════════════════════════════
+   PASSWORD TOGGLE
+════════════════════════════════════════════════════════════ */
+(function () {
+  const pass = document.getElementById('pass-input'), btn = document.getElementById('pass-toggle');
+  const open = document.getElementById('eye-open'), closed = document.getElementById('eye-closed');
+  btn.addEventListener('click', () => {
+    const show = pass.type === 'password'; pass.type = show ? 'text' : 'password';
+    open.style.display = show ? 'none' : 'block'; closed.style.display = show ? 'block' : 'none';
+    btn.style.transform = 'translateY(-50%) scale(1.3)';
+    setTimeout(() => btn.style.transform = '', 200);
+  });
+})();
+
+/* ════════════════════════════════════════════════════════════
+   REMEMBER ME
+════════════════════════════════════════════════════════════ */
+(function () {
+  const box = document.getElementById('remember-check');
+  function toggle() { const c = box.classList.toggle('checked'); box.setAttribute('aria-checked', c); }
+  box.addEventListener('click', toggle);
+  box.addEventListener('keydown', e => { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); toggle(); } });
+})();
+
+/* ════════════════════════════════════════════════════════════
+   FORM SUBMIT — wired to real backend via api.js
+════════════════════════════════════════════════════════════ */
+(function () {
+  const form    = document.getElementById('login-form');
+  const btn     = document.getElementById('login-btn');
+  const card    = document.getElementById('login-card');
+  const success = document.getElementById('success-overlay');
+  const errBanner  = document.getElementById('server-error-banner');
+  const errText    = document.getElementById('server-error-text');
+
+  function showServerError(msg) {
+    errText.textContent = msg || 'Invalid credentials. Please try again.';
+    errBanner.classList.add('visible');
+    card.classList.remove('shake');
+    void card.offsetWidth;
+    card.classList.add('shake');
+    card.addEventListener('animationend', () => card.classList.remove('shake'), { once: true });
+  }
+
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const emailOk = validateField(document.getElementById('email-group'), true);
+    const passOk  = validateField(document.getElementById('pass-group'),  true);
+
+    if (!emailOk || !passOk) {
+      card.classList.remove('shake');
+      void card.offsetWidth;
+      card.classList.add('shake');
+      card.addEventListener('animationend', () => card.classList.remove('shake'), { once: true });
+      return;
+    }
+
+    const email    = document.getElementById('email-input').value.trim();
+    const password = document.getElementById('pass-input').value;
+
+    btn.classList.add('loading');
+    errBanner.classList.remove('visible');
+
+    try {
+      await AdminAPI.login(email, password);
+      /* ── SUCCESS ── */
+      btn.classList.remove('loading');
+      success.classList.add('visible');
+      spawnParticles();
+      setTimeout(() => { window.location.href = 'admin-dashboard.html'; }, 2000);
+    } catch (err) {
+      btn.classList.remove('loading');
+      showServerError(err.message || 'Login failed. Please try again.');
+    }
+  });
+
+  function spawnParticles() {
+    const r  = card.getBoundingClientRect();
+    const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+    for (let i = 0; i < 26; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      const sz = Math.random() * 5 + 2, angle = (Math.PI * 2 * i) / 26, dist = 80 + Math.random() * 130;
+      Object.assign(p.style, {
+        width: sz + 'px', height: sz + 'px', left: cx + 'px', top: cy + 'px',
+        boxShadow: `0 0 ${sz*2}px rgba(212,175,55,0.6)`,
+        transition: `transform ${0.55+Math.random()*0.4}s cubic-bezier(0.25,0.46,0.45,0.94), opacity ${0.8+Math.random()*0.3}s ease`,
+        opacity: '0.9'
+      });
+      document.body.appendChild(p);
+      requestAnimationFrame(() => { p.style.transform = `translate(${Math.cos(angle)*dist}px,${Math.sin(angle)*dist}px) scale(0.3)`; p.style.opacity = '0'; });
+      setTimeout(() => p.remove(), 1400);
+    }
+  }
+})();
+
+/* ════════════════════════════════════════════════════════════
+   MOUSE PARALLAX TILT
+════════════════════════════════════════════════════════════ */
+(function () {
+  const wrapper = document.querySelector('.login-wrapper');
+  const card    = document.getElementById('login-card');
+  wrapper.addEventListener('mousemove', e => {
+    const r  = card.getBoundingClientRect();
+    const dx = (e.clientX - (r.left + r.width/2))  / window.innerWidth;
+    const dy = (e.clientY - (r.top  + r.height/2)) / window.innerHeight;
+    card.style.transform  = `perspective(900px) rotateX(${dy*6}deg) rotateY(${dx*-6}deg) translateZ(4px)`;
+    card.style.transition = 'transform 0.12s ease';
+  });
+  wrapper.addEventListener('mouseleave', () => {
+    card.style.transform  = '';
+    card.style.transition = 'transform 0.65s cubic-bezier(0.25,0.46,0.45,0.94)';
+  });
+})();
+</script>
+</body>
+</html>

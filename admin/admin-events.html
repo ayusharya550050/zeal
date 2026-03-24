@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script>
+    (function(){
+      var t = localStorage.getItem('zeal-admin-theme') || 'dark-theme';
+      document.documentElement.className = t;
+    })();
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Events — ZEAL Admin</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="css/admin.css" />
+</head>
+<body class="dark-theme">
+<div class="admin-shell">
+
+  <aside class="admin-sidebar">
+    <div class="sidebar-brand">
+      <a href="admin-dashboard.html" class="brand-title">ZEAL</a>
+      <div class="brand-sub">Admin Panel</div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Main</div>
+      <a href="admin-dashboard.html" class="sidebar-link"><span class="nav-icon"><i class="fa-solid fa-gauge-high"></i></span>Dashboard</a>
+      <a href="admin-home.html"      class="sidebar-link"><span class="nav-icon"><i class="fa-solid fa-house"></i></span>Home</a>
+      <div class="nav-section-label">Content</div>
+      <a href="admin-events.html"        class="sidebar-link active"><span class="nav-icon"><i class="fa-solid fa-calendar-star"></i></span>Events</a>
+      <a href="admin-team.html"          class="sidebar-link"><span class="nav-icon"><i class="fa-solid fa-users"></i></span>Our Team</a>
+      <a href="admin-sponsors.html"      class="sidebar-link"><span class="nav-icon"><i class="fa-solid fa-handshake"></i></span>Sponsors</a>
+      <a href="admin-announcements.html" class="sidebar-link"><span class="nav-icon"><i class="fa-solid fa-bullhorn"></i></span>Announcements</a>
+      <a href="admin-footer.html"        class="sidebar-link"><span class="nav-icon"><i class="fa-solid fa-shoe-prints"></i></span>Footer</a>
+    </nav>
+    <div class="sidebar-footer"><small>ZEAL Admin v1.0</small></div>
+  </aside>
+
+  <div class="admin-main">
+    <header class="admin-topbar">
+      <button class="topbar-toggle"><i class="fa-solid fa-bars"></i></button>
+      <span class="topbar-title">Events</span>
+      <div class="topbar-spacer"></div>
+      <div class="topbar-actions">
+        <button class="btn-gold" onclick="openAddModal()">
+          <i class="fa-solid fa-plus"></i> Add Event
+        </button>
+        <button class="theme-toggle-btn" aria-label="Toggle theme" title="Toggle theme">
+          <span class="t-icon-sun">&#9728;</span><span class="t-icon-moon">&#9790;</span>
+        </button>
+        <button class="topbar-btn" onclick="Auth.logout()" title="Logout"><i class="fa-solid fa-right-from-bracket"></i></button>
+        <div class="topbar-avatar">A</div>
+      </div>
+    </header>
+
+    <main class="admin-content">
+      <div class="page-header">
+        <h1>Events</h1>
+        <p>Manage all festival events — add, edit, or remove entries.</p>
+        <div class="gold-line"></div>
+      </div>
+
+      <!-- Search + Filter Bar -->
+      <div class="admin-card" style="padding:14px 20px;margin-bottom:18px">
+        <div class="row g-2 align-items-center">
+          <div class="col-12 col-md-6">
+            <div class="input-group">
+              <span class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></span>
+              <input class="form-control" id="events-search" placeholder="Search events…" oninput="filterEvents()" />
+            </div>
+          </div>
+          <div class="col-6 col-md-3">
+            <select class="form-select" id="events-type-filter" onchange="filterEvents()">
+              <option value="">All Types</option>
+              <option value="cultural">Cultural</option>
+              <option value="technical">Technical</option>
+              <option value="literary">Literary</option>
+              <option value="music">Music</option>
+              <option value="sports">Sports</option>
+            </select>
+          </div>
+          <div class="col-6 col-md-3 text-end">
+            <span id="events-count-badge" class="badge-gold">0 Events</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Events Table -->
+      <div class="admin-card">
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Title</th>
+                <th>Type</th>
+                <th>Date</th>
+                <th>Description</th>
+                <th style="width:120px">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="events-table-body">
+              <tr><td colspan="6" class="text-center py-4" style="color:var(--text-muted)">Loading…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- ── Add / Edit Event Modal ──────────────────────────── -->
+<div class="modal fade" id="eventModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="eventModalTitle">Add Event</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="event-edit-id" value="" />
+        <div class="row g-3">
+          <div class="col-12 col-md-8">
+            <label class="form-label">Event Title *</label>
+            <input class="form-control" id="event-title" placeholder="e.g. Battle of Bands" />
+          </div>
+          <div class="col-12 col-md-4">
+            <label class="form-label">Category *</label>
+            <select class="form-select" id="event-type">
+              <option value="">Select category…</option>
+              <option value="cultural">Cultural</option>
+              <option value="technical">Technical</option>
+              <option value="literary">Literary</option>
+              <option value="music">Music</option>
+              <option value="sports">Sports</option>
+            </select>
+          </div>
+          <div class="col-12 col-md-4">
+            <label class="form-label">Date *</label>
+            <input type="date" class="form-control" id="event-date" />
+          </div>
+          <div class="col-12 col-md-4">
+            <label class="form-label">Location *</label>
+            <input class="form-control" id="event-location" placeholder="e.g. Main Auditorium" />
+          </div>
+          <div class="col-6 col-md-2">
+            <label class="form-label">Team Size</label>
+            <input class="form-control" id="event-teamsize" placeholder="e.g. 3-5" />
+          </div>
+          <div class="col-6 col-md-2">
+            <label class="form-label">Prize</label>
+            <input class="form-control" id="event-prize" placeholder="e.g. ₹5000" />
+          </div>
+          <div class="col-12">
+            <label class="form-label">Description *</label>
+            <textarea class="form-control" id="event-description" rows="4" placeholder="Brief description of the event…"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-outline" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn-gold" id="save-event-btn" onclick="saveEvent()"><i class="fa-solid fa-floppy-disk"></i> Save Event</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+<script src="js/admin.js"></script>
+<script src="js/api.js"></script>
+<script>
+Auth.guardPage();
+
+let events = [];
+let filteredEvents = [];
+
+// ── Render Table ──────────────────────────────────────────
+function renderEvents() {
+  const tbody = document.getElementById('events-table-body');
+  document.getElementById('events-count-badge').textContent = `${filteredEvents.length} Event${filteredEvents.length !== 1 ? 's' : ''}`;
+
+  if (!filteredEvents.length) {
+    tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><i class="fa-solid fa-calendar-xmark"></i><p>No events found.</p></div></td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = filteredEvents.map((ev, visIdx) => `
+    <tr>
+      <td style="color:var(--text-muted);font-family:var(--font-mono)">${String(visIdx + 1).padStart(2, '0')}</td>
+      <td><strong>${ev.title}</strong></td>
+      <td><span class="badge-gold">${ev.category}</span></td>
+      <td style="white-space:nowrap;color:var(--text-secondary)">${formatDate(ev.date)}</td>
+      <td style="color:var(--text-secondary);max-width:250px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${ev.description || '—'}</td>
+      <td>
+        <div style="display:flex;gap:6px">
+          <button class="btn-edit-sm"   onclick="openEditModal('${ev._id}')"><i class="fa-solid fa-pen"></i></button>
+          <button class="btn-danger-sm" onclick="deleteEvent('${ev._id}', '${ev.title.replace(/'/g,"\\'")}')"><i class="fa-solid fa-trash"></i></button>
+        </div>
+      </td>
+    </tr>`).join('');
+}
+
+// ── Filter (client-side on loaded data) ───────────────────
+function filterEvents() {
+  const q    = document.getElementById('events-search').value.toLowerCase();
+  const type = document.getElementById('events-type-filter').value;
+  filteredEvents = events.filter(ev => {
+    const matchSearch = !q || ev.title.toLowerCase().includes(q) || (ev.description || '').toLowerCase().includes(q);
+    const matchType   = !type || ev.category === type;
+    return matchSearch && matchType;
+  });
+  renderEvents();
+}
+
+// ── Load events from API ───────────────────────────────────
+async function loadEvents() {
+  try {
+    events = await EventsAPI.getAll();
+    filteredEvents = [...events];
+    renderEvents();
+  } catch (err) {
+    console.error(err);
+    Toast.show('Failed to load events: ' + err.message, 'error');
+    document.getElementById('events-table-body').innerHTML =
+      `<tr><td colspan="6" style="color:var(--text-muted);text-align:center;padding:20px">Could not load events.</td></tr>`;
+  }
+}
+
+// ── Add Modal ─────────────────────────────────────────────
+function openAddModal() {
+  document.getElementById('eventModalTitle').textContent = 'Add Event';
+  document.getElementById('event-edit-id').value       = '';
+  document.getElementById('event-title').value         = '';
+  document.getElementById('event-type').value          = '';
+  document.getElementById('event-date').value          = '';
+  document.getElementById('event-location').value      = '';
+  document.getElementById('event-teamsize').value      = '';
+  document.getElementById('event-prize').value         = '';
+  document.getElementById('event-description').value   = '';
+  openModal('eventModal');
+}
+
+// ── Edit Modal ────────────────────────────────────────────
+function openEditModal(id) {
+  const ev = events.find(e => e._id === id);
+  if (!ev) return;
+  document.getElementById('eventModalTitle').textContent = 'Edit Event';
+  document.getElementById('event-edit-id').value       = ev._id;
+  document.getElementById('event-title').value         = ev.title;
+  document.getElementById('event-type').value          = ev.category;
+  document.getElementById('event-date').value          = ev.date;
+  document.getElementById('event-location').value      = ev.location;
+  document.getElementById('event-teamsize').value      = ev.teamSize || '';
+  document.getElementById('event-prize').value         = ev.prize    || '';
+  document.getElementById('event-description').value   = ev.description || '';
+  openModal('eventModal');
+}
+
+// ── Save (Create / Update) ────────────────────────────────
+async function saveEvent() {
+  const title    = document.getElementById('event-title').value.trim();
+  const category = document.getElementById('event-type').value;
+  const date     = document.getElementById('event-date').value;
+  const location = document.getElementById('event-location').value.trim();
+  const teamSize = document.getElementById('event-teamsize').value.trim();
+  const prize    = document.getElementById('event-prize').value.trim();
+  const desc     = document.getElementById('event-description').value.trim();
+
+  if (!title)    { Toast.show('Event title is required.', 'error');    return; }
+  if (!category) { Toast.show('Please select a category.', 'error');   return; }
+  if (!date)     { Toast.show('Date is required.', 'error');           return; }
+  if (!location) { Toast.show('Location is required.', 'error');       return; }
+  if (!desc)     { Toast.show('Description is required.', 'error');    return; }
+
+  const payload = { title, category, date, location, teamSize, prize, description: desc };
+  const editId  = document.getElementById('event-edit-id').value;
+  const btn     = document.getElementById('save-event-btn');
+
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving…';
+
+  try {
+    if (editId) {
+      await EventsAPI.update(editId, payload);
+      Toast.show('Event updated!', 'success');
+    } else {
+      await EventsAPI.create(payload);
+      Toast.show('Event added!', 'success');
+    }
+    closeModal('eventModal');
+    await loadEvents();
+  } catch (err) {
+    Toast.show('Save failed: ' + err.message, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Save Event';
+  }
+}
+
+// ── Delete ────────────────────────────────────────────────
+async function deleteEvent(id, title) {
+  confirmDelete(`Delete "${title}"?`, async () => {
+    try {
+      await EventsAPI.delete(id);
+      Toast.show('Event deleted.', 'success');
+      await loadEvents();
+    } catch (err) {
+      Toast.show('Delete failed: ' + err.message, 'error');
+    }
+  });
+}
+
+// ── Init ──────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', loadEvents);
+</script>
+</body>
+</html>

@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="ZEAL Announcements — Latest updates, news, and information from the annual cultural festival." />
+  <meta name="theme-color" content="#D4AF37" />
+  <title>Announcements — ZEAL Cultural Festival</title>
+  <link rel="manifest" href="pwa/manifest.json" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/cursor.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+  <link rel="stylesheet" href="css/light-theme.css" />
+
+  <!-- Early theme init (prevents flash) -->
+  <script>
+    (function(){
+      var t = localStorage.getItem('zeal-theme');
+      if (t === 'light') document.documentElement.classList.add('light-theme-preload');
+    })();
+  </script>
+  <style>
+    .light-theme-preload { background-color: #F8F6F0 !important; }
+  </style>
+</head>
+<body>
+  <div class="cursor-dot" aria-hidden="true"></div>
+  <div class="cursor-ring" aria-hidden="true"></div>
+  <div class="cursor-myth-icon" aria-hidden="true"></div>
+  <canvas id="particles-canvas" aria-hidden="true"></canvas>
+
+  <!-- NAVBAR -->
+  <nav class="navbar-zeal scrolled">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center">
+        <a href="index.html" class="navbar-brand-zeal">ZEAL<span>St. Andrews Group of Institutions</span></a>
+        <button class="navbar-toggler d-lg-none" type="button" id="navToggle" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <div class="d-none d-lg-flex align-items-center gap-1">
+          <a href="index.html" class="nav-link-zeal">Home</a>
+          <a href="events.html" class="nav-link-zeal">Events</a>
+          <a href="team.html" class="nav-link-zeal">Our Team</a>
+          <a href="sponsors.html" class="nav-link-zeal">Sponsors</a>
+          <a href="announcements.html" class="nav-link-zeal active">Announcements</a>
+          <button class="btn-install-app ms-1" id="nav-install-btn" aria-label="Install App">
+            <i class="fas fa-download"></i> Install
+          </button>
+          <button class="theme-toggle-btn ms-1" id="themeToggle" aria-label="Toggle theme">
+            <span class="theme-icon">🌙</span>
+            <span class="theme-label">Dark</span>
+          </button>
+        </div>
+      </div>
+      <div class="collapse" id="mobileMenu">
+        <div class="d-flex flex-column gap-2 py-2">
+          <a href="index.html" class="nav-link-zeal">Home</a>
+          <a href="events.html" class="nav-link-zeal">Events</a>
+          <a href="team.html" class="nav-link-zeal">Our Team</a>
+          <a href="sponsors.html" class="nav-link-zeal">Sponsors</a>
+          <a href="announcements.html" class="nav-link-zeal">Announcements</a>
+          <div class="d-flex gap-2 mt-1">
+            <button class="btn-install-app flex-grow-1 justify-content-center" id="nav-install-btn-mobile" aria-label="Install App">
+              <i class="fas fa-download"></i> Install App
+            </button>
+            <button class="theme-toggle-btn flex-grow-1 justify-content-center" id="themeToggleMobile" aria-label="Toggle theme">
+              <span class="theme-icon">🌙</span>
+              <span class="theme-label">Dark</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <!-- PAGE HERO -->
+    <section class="page-hero">
+      <div class="container text-center">
+        <span class="section-eyebrow">Latest Updates</span>
+        <h1 class="page-hero-title">Announcements</h1>
+        <div class="greek-ornament justify-content-center">
+          <div class="greek-ornament-line"></div>
+          <div class="greek-ornament-diamond"></div>
+          <div class="greek-ornament-line"></div>
+        </div>
+        <p style="color:var(--text-secondary);font-size:0.95rem;max-width:600px;margin:1rem auto 0;">Stay updated with the latest news, reveals, and updates from ZEAL 2025.</p>
+      </div>
+    </section>
+
+    <!-- ANNOUNCEMENTS SECTION -->
+    <section class="section-zeal announcements-section" style="padding-top:20px;">
+      <div class="container">
+        <!-- Announcements — populated from backend by zeal-data.js -->
+        <div class="row g-4" id="announcements-dynamic">
+
+          <!-- ANNOUNCEMENT 1 — REGISTRATIONS OPEN -->
+          <div class="col-lg-6" data-aos="fade-up" data-aos-delay="0">
+            <div class="announcement-card">
+              <div class="announcement-header">
+                <div class="announcement-icon">
+                  <i class="fas fa-door-open"></i>
+                </div>
+                <div>
+                  <span class="announcement-tag">Registration</span>
+                  <div class="announcement-title">Registrations Now Open for ZEAL 2025!</div>
+                </div>
+              </div>
+              <div class="announcement-body">
+                <p>We are thrilled to announce that registrations for ZEAL 2025 are officially open! Students from all colleges can now register for their favourite events. Early bird registrations close on February 28, 2025. Don't miss out — spots are limited!</p>
+              </div>
+              <div class="announcement-footer">
+                <span class="announcement-date"><i class="fas fa-calendar me-1" style="color:var(--gold);"></i>January 15, 2025</span>
+                <span class="announcement-badge new">New</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- ANNOUNCEMENT 2 — ARTIST REVEAL -->
+          <div class="col-lg-6" data-aos="fade-up" data-aos-delay="50">
+            <div class="announcement-card">
+              <div class="announcement-header">
+                <div class="announcement-icon">
+                  <i class="fas fa-star"></i>
+                </div>
+                <div>
+                  <span class="announcement-tag">Artist Reveal</span>
+                  <div class="announcement-title">Headlining Artist Announcement — Coming Soon!</div>
+                </div>
+              </div>
+              <div class="announcement-body">
+                <p>The moment you've been waiting for is almost here. Our headlining artist for ZEAL Night 2025 will be revealed on February 1, 2025. Follow us on Instagram for the big reveal. Hint: It's going to be ELECTRIC. ⚡</p>
+              </div>
+              <div class="announcement-footer">
+                <span class="announcement-date"><i class="fas fa-calendar me-1" style="color:var(--gold);"></i>January 20, 2025</span>
+                <span class="announcement-badge new">New</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- ANNOUNCEMENT 3 — SCHEDULE -->
+          <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
+            <div class="announcement-card">
+              <div class="announcement-header">
+                <div class="announcement-icon">
+                  <i class="fas fa-calendar-days"></i>
+                </div>
+                <div>
+                  <span class="announcement-tag">Schedule</span>
+                  <div class="announcement-title">Official ZEAL 2025 Schedule Released</div>
+                </div>
+              </div>
+              <div class="announcement-body">
+                <p>The complete schedule for ZEAL 2025 is out! The festival runs from March 15-17, 2025. Day 1 focuses on cultural competitions, Day 2 is for technical and literary events, and Day 3 is the grand finale with the headlining artist night.</p>
+              </div>
+              <div class="announcement-footer">
+                <span class="announcement-date"><i class="fas fa-calendar me-1" style="color:var(--gold);"></i>January 25, 2025</span>
+                <span class="announcement-badge">Update</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- ANNOUNCEMENT 4 — PRIZE POOL -->
+          <div class="col-lg-6" data-aos="fade-up" data-aos-delay="150">
+            <div class="announcement-card">
+              <div class="announcement-header">
+                <div class="announcement-icon">
+                  <i class="fas fa-trophy"></i>
+                </div>
+                <div>
+                  <span class="announcement-tag">Prize Pool</span>
+                  <div class="announcement-title">Total Prize Pool Exceeds ₹5 Lakhs!</div>
+                </div>
+              </div>
+              <div class="announcement-body">
+                <p>We're proud to announce that ZEAL 2025 features a total prize pool of over ₹5,00,000 across all events. Individual events offer prizes up to ₹25,000, with special trophies and certificates for all winners. Compete. Win. Claim your glory.</p>
+              </div>
+              <div class="announcement-footer">
+                <span class="announcement-date"><i class="fas fa-calendar me-1" style="color:var(--gold);"></i>February 1, 2025</span>
+                <span class="announcement-badge">Prizes</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- ANNOUNCEMENT 5 — WORKSHOP -->
+          <div class="col-lg-6" data-aos="fade-up" data-aos-delay="0">
+            <div class="announcement-card">
+              <div class="announcement-header">
+                <div class="announcement-icon">
+                  <i class="fas fa-chalkboard-teacher"></i>
+                </div>
+                <div>
+                  <span class="announcement-tag">Workshop</span>
+                  <div class="announcement-title">Pre-ZEAL Workshops Announced</div>
+                </div>
+              </div>
+              <div class="announcement-body">
+                <p>Sharpen your skills before the big day! We are hosting free pre-ZEAL workshops on Dance, Music Production, Debate, and Coding. Workshops will be held on March 10-12, 2025 on campus. Limited seats available — register now through the events page.</p>
+              </div>
+              <div class="announcement-footer">
+                <span class="announcement-date"><i class="fas fa-calendar me-1" style="color:var(--gold);"></i>February 5, 2025</span>
+                <span class="announcement-badge">Workshop</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- ANNOUNCEMENT 6 — RESULTS -->
+          <div class="col-lg-6" data-aos="fade-up" data-aos-delay="50">
+            <div class="announcement-card">
+              <div class="announcement-header">
+                <div class="announcement-icon" style="background:rgba(212,175,55,0.25);">
+                  <i class="fas fa-award"></i>
+                </div>
+                <div>
+                  <span class="announcement-tag">Results</span>
+                  <div class="announcement-title">ZEAL 2024 Results & Hall of Fame</div>
+                </div>
+              </div>
+              <div class="announcement-body">
+                <p>Relive the glory of ZEAL 2024! The results and complete Hall of Fame from last year's festival are now available on our website. Congratulations to all winners. Let this fuel your fire for ZEAL 2025. The arena awaits!</p>
+              </div>
+              <div class="announcement-footer">
+                <span class="announcement-date"><i class="fas fa-calendar me-1" style="color:var(--gold);"></i>December 20, 2024</span>
+                <span class="announcement-badge">Archive</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- No more announcements indicator -->
+        <div class="text-center mt-4" data-aos="fade-up">
+          <div class="greek-ornament justify-content-center">
+            <div class="greek-ornament-line"></div>
+            <div class="greek-ornament-diamond"></div>
+            <div class="greek-ornament-small"></div>
+            <div class="greek-ornament-diamond"></div>
+            <div class="greek-ornament-line"></div>
+          </div>
+          <p style="font-family:var(--font-heading);font-size:0.72rem;letter-spacing:0.3em;color:var(--text-secondary);margin-top:1rem;">MORE UPDATES COMING SOON</p>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer-zeal">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-lg-4">
+          <div class="footer-brand">ZEAL</div>
+          <p class="footer-tagline">Annual Cultural Festival</p>
+          <div class="footer-social">
+            <a href="#" class="social-icon" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-icon" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-icon" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+          </div>
+        </div>
+        <div class="col-6 col-lg-3 offset-lg-1">
+          <div class="footer-heading">Navigate</div>
+          <a href="index.html" class="footer-link">Home</a>
+          <a href="events.html" class="footer-link">Events</a>
+          <a href="team.html" class="footer-link">Our Team</a>
+          <a href="sponsors.html" class="footer-link">Sponsors</a>
+          <a href="announcements.html" class="footer-link">Announcements</a>
+        </div>
+        <div class="col-6 col-lg-3">
+          <div class="footer-heading">Contact</div>
+          <p id="footer-contact-dynamic" style="font-size:0.82rem;color:var(--text-secondary);line-height:1.8;">
+            <i class="fas fa-envelope" style="color:var(--gold);margin-right:0.5rem;"></i>zeal@standrews.edu.in
+          </p>
+        </div>
+      </div>
+      <div class="footer-dev-credit">
+        <p class="footer-dev-label">Website Developed By</p>
+        <p class="footer-dev-names" id="footer-devs-dynamic">Mr. Ayush Arya &nbsp;|&nbsp; Mr. Divyansh Prajapati &nbsp;|&nbsp; Mr. Nimish Nirmal</p>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 <span>ZEAL</span> — St. Andrews Group of Institutions.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js" defer></script>
+  <script src="js/cursor.js" defer></script>
+  <script src="js/particles.js" defer></script>
+  <script src="js/animations.js" defer></script>
+  <script src="js/main.js" defer></script>
+  <script src="js/theme.js" defer></script>
+  <script src="js/pwa.js" defer></script>
+  <script>
+    window.dispatchEvent(new Event('loaderComplete'));
+    const navToggle = document.getElementById('navToggle');
+    const mobileMenu = document.getElementById('mobileMenu');
+    if (navToggle && mobileMenu) {
+      navToggle.addEventListener('click', () => mobileMenu.classList.toggle('collapse'));
+    }
+  </script>
+</body>
+</html>

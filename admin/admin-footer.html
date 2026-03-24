@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script>
+    (function(){
+      var t = localStorage.getItem('zeal-admin-theme') || 'dark-theme';
+      document.documentElement.className = t;
+    })();
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Footer — ZEAL Admin</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="css/admin.css" />
+</head>
+<body class="dark-theme">
+<div class="admin-shell">
+
+  <!-- ── Sidebar ──────────────────────────────────── -->
+  <aside class="admin-sidebar">
+    <div class="sidebar-brand">
+      <a href="admin-dashboard.html" class="brand-title">ZEAL</a>
+      <div class="brand-sub">Admin Panel</div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Main</div>
+      <a href="admin-dashboard.html" class="sidebar-link"><span class="nav-icon"><i class="fa-solid fa-gauge-high"></i></span>Dashboard</a>
+      <a href="admin-home.html"      class="sidebar-link"><span class="nav-icon"><i class="fa-solid fa-house"></i></span>Home</a>
+      <div class="nav-section-label">Content</div>
+      <a href="admin-events.html"        class="sidebar-link"><span class="nav-icon"><i class="fa-solid fa-calendar-star"></i></span>Events</a>
+      <a href="admin-team.html"          class="sidebar-link"><span class="nav-icon"><i class="fa-solid fa-users"></i></span>Our Team</a>
+      <a href="admin-sponsors.html"      class="sidebar-link"><span class="nav-icon"><i class="fa-solid fa-handshake"></i></span>Sponsors</a>
+      <a href="admin-announcements.html" class="sidebar-link"><span class="nav-icon"><i class="fa-solid fa-bullhorn"></i></span>Announcements</a>
+      <a href="admin-footer.html"        class="sidebar-link active"><span class="nav-icon"><i class="fa-solid fa-shoe-prints"></i></span>Footer</a>
+    </nav>
+    <div class="sidebar-footer"><small>ZEAL Admin v1.0</small></div>
+  </aside>
+
+  <!-- ── Main ─────────────────────────────────────── -->
+  <div class="admin-main">
+    <header class="admin-topbar">
+      <button class="topbar-toggle"><i class="fa-solid fa-bars"></i></button>
+      <span class="topbar-title">Footer</span>
+      <div class="topbar-spacer"></div>
+      <div class="topbar-actions">
+        <button class="btn-gold" id="save-all-btn" onclick="saveAll()">
+          <i class="fa-solid fa-floppy-disk"></i> Save All
+        </button>
+        <button class="theme-toggle-btn" aria-label="Toggle theme" title="Toggle theme">
+          <span class="t-icon-sun">&#9728;</span>
+          <span class="t-icon-moon">&#9790;</span>
+        </button>
+        <button class="topbar-btn" onclick="Auth.logout()" title="Logout"><i class="fa-solid fa-right-from-bracket"></i></button>
+        <div class="topbar-avatar">A</div>
+      </div>
+    </header>
+
+    <main class="admin-content">
+      <div class="page-header">
+        <h1>Footer</h1>
+        <p>Manage developer credits and contact information displayed in the footer.</p>
+        <div class="gold-line"></div>
+      </div>
+
+      <!-- ─── A. Developers ───────────────────────── -->
+      <div class="admin-card">
+        <div class="card-header-row">
+          <h2><i class="fa-solid fa-code me-2"></i>Developers</h2>
+          <button class="btn-gold" onclick="addDeveloper()">
+            <i class="fa-solid fa-plus"></i> Add Developer
+          </button>
+        </div>
+        <div id="developers-list">
+          <div class="text-center py-4" style="color:var(--text-muted)">
+            <i class="fa-solid fa-spinner fa-spin"></i> Loading…
+          </div>
+        </div>
+        <div class="mt-3">
+          <button class="btn-gold" id="save-devs-btn" onclick="saveDevelopers()">
+            <i class="fa-solid fa-floppy-disk"></i> Save Developers
+          </button>
+        </div>
+      </div>
+
+      <!-- ─── B. Contact Details ───────────────────── -->
+      <div class="admin-card">
+        <div class="card-header-row">
+          <h2><i class="fa-solid fa-address-card me-2"></i>Contact Details</h2>
+        </div>
+        <div class="row g-3">
+          <div class="col-12">
+            <label class="form-label">Address</label>
+            <textarea class="form-control" id="contact-address" rows="2" placeholder="Full postal address…"></textarea>
+          </div>
+          <div class="col-12 col-md-6">
+            <label class="form-label">Website</label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="fa-solid fa-globe"></i></span>
+              <input class="form-control" id="contact-website" type="url" placeholder="https://zeal.institute.edu.in" />
+            </div>
+          </div>
+          <div class="col-12 col-md-6">
+            <label class="form-label">Email</label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="fa-solid fa-envelope"></i></span>
+              <input class="form-control" id="contact-email" type="email" placeholder="zeal@institute.edu.in" />
+            </div>
+          </div>
+          <div class="col-12 col-md-6">
+            <label class="form-label">Phone Number</label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="fa-solid fa-phone"></i></span>
+              <input class="form-control" id="contact-phone" placeholder="+91 20 XXXX XXXX" />
+            </div>
+          </div>
+        </div>
+        <hr class="section-divider" />
+        <button class="btn-gold" id="save-contact-btn" onclick="saveContact()">
+          <i class="fa-solid fa-floppy-disk"></i> Save Contact Info
+        </button>
+      </div>
+
+      <!-- ─── Preview Panel ────────────────────────── -->
+      <div class="admin-card">
+        <div class="card-header-row">
+          <h2><i class="fa-solid fa-eye me-2"></i>Footer Preview</h2>
+          <button class="btn-outline" onclick="refreshPreview()"><i class="fa-solid fa-rotate-right"></i> Refresh</button>
+        </div>
+        <div id="footer-preview" style="background:#0D0D14;border-radius:10px;padding:28px 24px;border:1px solid var(--border)">
+          <div id="preview-contact" style="color:var(--text-secondary);font-size:13px;margin-bottom:20px"></div>
+          <hr style="border-color:var(--border);margin:16px 0"/>
+          <div style="font-size:11px;color:var(--text-muted);margin-bottom:8px;letter-spacing:0.1em;text-transform:uppercase">Made with ♥ by</div>
+          <div id="preview-devs" style="display:flex;flex-wrap:wrap;gap:10px"></div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+<script src="js/admin.js"></script>
+<script src="js/api.js"></script>
+<script>
+Auth.guardPage();
+
+/* ── In-memory state ─────────────────────────────────── */
+let developers = [];
+let contact    = {};
+
+/* ── Load from backend ───────────────────────────────── */
+async function loadFooter() {
+  try {
+    const data = await FooterAPI.get();
+    developers = data.developers || [];
+    contact    = data.contact    || {};
+    loadContactFields();
+    renderDevelopers();
+    refreshPreview();
+  } catch (err) {
+    console.error(err);
+    Toast.show('Failed to load footer data: ' + err.message, 'error');
+    document.getElementById('developers-list').innerHTML =
+      '<div class="empty-state"><i class="fa-solid fa-triangle-exclamation"></i><p>Could not load footer data.</p></div>';
+  }
+}
+
+/* ── A. Developers ───────────────────────────────────── */
+function renderDevelopers() {
+  const list = document.getElementById('developers-list');
+  if (!developers.length) {
+    list.innerHTML = '<div class="empty-state"><i class="fa-solid fa-code"></i><p>No developers added yet.</p></div>';
+    return;
+  }
+  list.innerHTML = developers.map((d, i) => `
+    <div class="dynamic-item">
+      <button class="item-remove" onclick="removeDeveloper(${i})">✕</button>
+      <div class="row g-3">
+        <div class="col-12 col-md-5">
+          <label class="form-label">Name</label>
+          <input class="form-control" value="${d.name || ''}"
+            oninput="developers[${i}].name=this.value;debouncedPreview()"
+            placeholder="Developer name" />
+        </div>
+        <div class="col-12 col-md-4">
+          <label class="form-label">Role</label>
+          <select class="form-select" onchange="developers[${i}].role=this.value;debouncedPreview()">
+            <option value="">Select role…</option>
+            ${['Frontend Developer','Backend Developer','Full Stack Developer','UI/UX Designer','DevOps Engineer','Other']
+              .map(r => `<option ${r === (d.role||'') ? 'selected' : ''}>${r}</option>`).join('')}
+          </select>
+        </div>
+        <div class="col-12 col-md-3">
+          <label class="form-label">GitHub (optional)</label>
+          <input class="form-control" value="${d.github || ''}"
+            oninput="developers[${i}].github=this.value"
+            placeholder="username" />
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function addDeveloper() {
+  developers.push({ name: '', role: '', github: '' });
+  renderDevelopers();
+}
+
+function removeDeveloper(i) {
+  developers.splice(i, 1);
+  renderDevelopers();
+  refreshPreview();
+}
+
+async function saveDevelopers() {
+  const btn = document.getElementById('save-devs-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving…';
+  try {
+    await FooterAPI.updateDevelopers(developers);
+    Toast.show('Developers saved!', 'success');
+    refreshPreview();
+  } catch (err) {
+    Toast.show('Save failed: ' + err.message, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Save Developers';
+  }
+}
+
+/* ── B. Contact ──────────────────────────────────────── */
+function loadContactFields() {
+  document.getElementById('contact-address').value = contact.address || '';
+  document.getElementById('contact-website').value = contact.website || '';
+  document.getElementById('contact-email').value   = contact.email   || '';
+  document.getElementById('contact-phone').value   = contact.phone   || '';
+}
+
+function readContactFields() {
+  return {
+    address: document.getElementById('contact-address').value.trim(),
+    website: document.getElementById('contact-website').value.trim(),
+    email:   document.getElementById('contact-email').value.trim(),
+    phone:   document.getElementById('contact-phone').value.trim()
+  };
+}
+
+async function saveContact() {
+  contact = readContactFields();
+  const btn = document.getElementById('save-contact-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving…';
+  try {
+    await FooterAPI.updateContact(contact);
+    Toast.show('Contact details saved!', 'success');
+    refreshPreview();
+  } catch (err) {
+    Toast.show('Save failed: ' + err.message, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Save Contact Info';
+  }
+}
+
+/* ── Save All ────────────────────────────────────────── */
+async function saveAll() {
+  contact = readContactFields();
+  const btn = document.getElementById('save-all-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving…';
+  try {
+    await FooterAPI.updateAll(developers, contact);
+    Toast.show('Footer saved!', 'success');
+    refreshPreview();
+  } catch (err) {
+    Toast.show('Save failed: ' + err.message, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Save All';
+  }
+}
+
+/* ── Preview ─────────────────────────────────────────── */
+function refreshPreview() {
+  const c = readContactFields();
+
+  // Contact preview
+  const contactEl = document.getElementById('preview-contact');
+  const parts = [];
+  if (c.address) parts.push(`<div style="margin-bottom:4px"><i class="fa-solid fa-location-dot" style="color:var(--gold);margin-right:8px;width:14px"></i>${c.address}</div>`);
+  if (c.website) parts.push(`<div style="margin-bottom:4px"><i class="fa-solid fa-globe" style="color:var(--gold);margin-right:8px;width:14px"></i><a href="${c.website}" style="color:var(--text-secondary);text-decoration:none">${c.website}</a></div>`);
+  if (c.email)   parts.push(`<div style="margin-bottom:4px"><i class="fa-solid fa-envelope" style="color:var(--gold);margin-right:8px;width:14px"></i>${c.email}</div>`);
+  if (c.phone)   parts.push(`<div><i class="fa-solid fa-phone" style="color:var(--gold);margin-right:8px;width:14px"></i>${c.phone}</div>`);
+  contactEl.innerHTML = parts.join('') || '<span style="color:var(--text-muted)">No contact details yet.</span>';
+
+  // Devs preview
+  const devsEl = document.getElementById('preview-devs');
+  devsEl.innerHTML = developers.filter(d => d.name).map(d => `
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:8px 14px;display:inline-flex;align-items:center;gap:8px">
+      <span style="font-size:13px;font-weight:500;color:var(--text-primary)">${d.name}</span>
+      <span style="font-size:11px;color:var(--text-muted)">${d.role || ''}</span>
+      ${d.github ? `<a href="https://github.com/${d.github}" style="color:var(--gold);font-size:12px" target="_blank"><i class="fa-brands fa-github"></i></a>` : ''}
+    </div>`).join('') || '<span style="color:var(--text-muted);font-size:12px">No developers added.</span>';
+}
+
+/* Debounce preview on inline edits */
+let previewTimer;
+function debouncedPreview() {
+  clearTimeout(previewTimer);
+  previewTimer = setTimeout(refreshPreview, 400);
+}
+
+/* ── Init ────────────────────────────────────────────── */
+document.addEventListener('DOMContentLoaded', () => {
+  loadFooter();
+
+  // Auto-preview as contact fields change
+  ['contact-address','contact-website','contact-email','contact-phone'].forEach(id => {
+    document.getElementById(id).addEventListener('input', debouncedPreview);
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script>
+    (function(){
+      var t = localStorage.getItem('zeal-admin-theme') || 'dark-theme';
+      document.documentElement.className = t;
+    })();
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sponsors — ZEAL Admin</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="css/admin.css" />
+</head>
+<body class="dark-theme">
+<div class="admin-shell">
+
+  <aside class="admin-sidebar">
+    <div class="sidebar-brand">
+      <a href="admin-dashboard.html" class="brand-title">ZEAL</a>
+      <div class="brand-sub">Admin Panel</div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Main</div>
+      <a href="admin-dashboard.html" class="sidebar-link"><span class="nav-icon"><i class="fa-solid fa-gauge-high"></i></span>Dashboard</a>
+      <a href="admin-home.html"      class="sidebar-link"><span class="nav-icon"><i class="fa-solid fa-house"></i></span>Home</a>
+      <div class="nav-section-label">Content</div>
+      <a href="admin-events.html"        class="sidebar-link"><span class="nav-icon"><i class="fa-solid fa-calendar-star"></i></span>Events</a>
+      <a href="admin-team.html"          class="sidebar-link"><span class="nav-icon"><i class="fa-solid fa-users"></i></span>Our Team</a>
+      <a href="admin-sponsors.html"      class="sidebar-link active"><span class="nav-icon"><i class="fa-solid fa-handshake"></i></span>Sponsors</a>
+      <a href="admin-announcements.html" class="sidebar-link"><span class="nav-icon"><i class="fa-solid fa-bullhorn"></i></span>Announcements</a>
+      <a href="admin-footer.html"        class="sidebar-link"><span class="nav-icon"><i class="fa-solid fa-shoe-prints"></i></span>Footer</a>
+    </nav>
+    <div class="sidebar-footer"><small>ZEAL Admin v1.0</small></div>
+  </aside>
+
+  <div class="admin-main">
+    <header class="admin-topbar">
+      <button class="topbar-toggle"><i class="fa-solid fa-bars"></i></button>
+      <span class="topbar-title">Sponsors</span>
+      <div class="topbar-spacer"></div>
+      <div class="topbar-actions">
+        <button class="btn-gold" onclick="openAddCategoryModal()" style="margin-right:6px">
+          <i class="fa-solid fa-folder-plus"></i> Add Category
+        </button>
+        <button class="btn-gold" onclick="openAddSponsorModal()">
+          <i class="fa-solid fa-plus"></i> Add Sponsor
+        </button>
+        <button class="theme-toggle-btn" aria-label="Toggle theme" title="Toggle theme">
+          <span class="t-icon-sun">&#9728;</span><span class="t-icon-moon">&#9790;</span>
+        </button>
+        <button class="topbar-btn" onclick="Auth.logout()" title="Logout"><i class="fa-solid fa-right-from-bracket"></i></button>
+        <div class="topbar-avatar">A</div>
+      </div>
+    </header>
+
+    <main class="admin-content">
+      <div class="page-header">
+        <h1>Sponsors</h1>
+        <p>Manage festival sponsors organised by category.</p>
+        <div class="gold-line"></div>
+      </div>
+
+      <!-- Filter Bar -->
+      <div class="admin-card" style="padding:14px 20px;margin-bottom:18px">
+        <div class="row g-2 align-items-center">
+          <div class="col-12 col-md-5">
+            <div class="input-group">
+              <span class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></span>
+              <input class="form-control" id="sponsor-search" placeholder="Search sponsors…" oninput="filterSponsors()" />
+            </div>
+          </div>
+          <div class="col-12 col-md-4">
+            <select class="form-select" id="sponsor-category-filter" onchange="filterSponsors()">
+              <option value="">All Categories</option>
+            </select>
+          </div>
+          <div class="col text-end">
+            <span id="sponsor-count-badge" class="badge-gold">0 Sponsors</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sponsors view — grouped by category -->
+      <div id="sponsors-container">
+        <div class="text-center py-5" style="color:var(--text-muted)">
+          <i class="fa-solid fa-spinner fa-spin fa-2x mb-3"></i><br>Loading sponsors…
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- ── Add Category Modal ─────────────────────────────── -->
+<div class="modal fade" id="categoryModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">New Sponsor Category</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <label class="form-label">Category Name *</label>
+        <input class="form-control" id="new-category-name" placeholder="e.g. Title Partner, Powered By…" />
+      </div>
+      <div class="modal-footer">
+        <button class="btn-outline" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn-gold" id="save-category-btn" onclick="saveCategory()"><i class="fa-solid fa-floppy-disk"></i> Create</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Add / Edit Sponsor Modal ───────────────────────── -->
+<div class="modal fade" id="sponsorModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="sponsorModalTitle">Add Sponsor</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="sponsor-edit-category-id" value="" />
+        <input type="hidden" id="sponsor-edit-sponsor-id"  value="" />
+
+        <!-- Logo upload + preview -->
+        <div class="mb-3 text-center">
+          <div style="width:120px;height:70px;background:var(--bg-secondary);border:1px solid var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;overflow:hidden">
+            <img id="sponsor-logo-preview" src="" alt="Logo" style="max-width:110px;max-height:60px;display:none;object-fit:contain" />
+            <span id="sponsor-logo-placeholder" style="color:var(--text-muted);font-size:11px">No logo</span>
+          </div>
+          <label class="form-label">Logo Image</label>
+          <input type="file" class="form-control" id="sponsor-logo-file" accept="image/*" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Brand Name *</label>
+          <input class="form-control" id="sponsor-name" placeholder="e.g. TechCorp India" />
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Category *</label>
+          <select class="form-select" id="sponsor-category-select">
+            <option value="">Select category…</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-outline" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn-gold" id="save-sponsor-btn" onclick="saveSponsor()"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+<script src="js/admin.js"></script>
+<script src="js/api.js"></script>
+<script>
+Auth.guardPage();
+
+const BASE_URL = 'http://localhost:5000';
+let categories    = []; // full backend response: [{ _id, category, sponsors:[...] }]
+let allSponsors   = []; // flattened [{...sponsor, categoryId, categoryName}]
+let filteredSponsors = [];
+
+// ── Load ──────────────────────────────────────────────────
+async function loadSponsors() {
+  try {
+    categories = await SponsorsAPI.getAll();
+
+    // Flatten sponsors for search/filter
+    allSponsors = [];
+    categories.forEach(cat => {
+      (cat.sponsors || []).forEach(sp => {
+        allSponsors.push({ ...sp, categoryId: cat._id, categoryName: cat.category });
+      });
+    });
+    filteredSponsors = [...allSponsors];
+
+    populateCategoryDropdowns();
+    renderSponsors();
+  } catch (err) {
+    console.error(err);
+    Toast.show('Failed to load sponsors: ' + err.message, 'error');
+    document.getElementById('sponsors-container').innerHTML =
+      `<div class="empty-state admin-card"><i class="fa-solid fa-triangle-exclamation"></i><p>Could not load sponsors.</p></div>`;
+  }
+}
+
+// ── Populate category selects ─────────────────────────────
+function populateCategoryDropdowns() {
+  const filterSel  = document.getElementById('sponsor-category-filter');
+  const modalSel   = document.getElementById('sponsor-category-select');
+
+  // Preserve current filter selection
+  const currentFilter = filterSel.value;
+
+  filterSel.innerHTML = '<option value="">All Categories</option>' +
+    categories.map(c => `<option value="${c._id}" ${c._id === currentFilter ? 'selected' : ''}>${c.category}</option>`).join('');
+
+  modalSel.innerHTML = '<option value="">Select category…</option>' +
+    categories.map(c => `<option value="${c._id}">${c.category}</option>`).join('');
+}
+
+// ── Render sponsors grouped by category ───────────────────
+function renderSponsors() {
+  const container = document.getElementById('sponsors-container');
+
+  const q        = document.getElementById('sponsor-search').value.toLowerCase();
+  const catId    = document.getElementById('sponsor-category-filter').value;
+
+  filteredSponsors = allSponsors.filter(sp => {
+    const mq  = !q    || sp.name.toLowerCase().includes(q);
+    const mc  = !catId || sp.categoryId === catId;
+    return mq && mc;
+  });
+
+  document.getElementById('sponsor-count-badge').textContent =
+    `${filteredSponsors.length} Sponsor${filteredSponsors.length !== 1 ? 's' : ''}`;
+
+  if (!categories.length) {
+    container.innerHTML = `
+      <div class="empty-state admin-card">
+        <i class="fa-solid fa-handshake"></i>
+        <p>No sponsor categories yet.<br>Click "Add Category" to get started.</p>
+      </div>`;
+    return;
+  }
+
+  // Build the grouped view (show all categories, even if filtered)
+  const catsToShow = catId ? categories.filter(c => c._id === catId) : categories;
+
+  container.innerHTML = catsToShow.map(cat => {
+    // Apply search filter within this category
+    const visibleSponsors = (cat.sponsors || []).filter(sp =>
+      !q || sp.name.toLowerCase().includes(q)
+    );
+
+    return `
+    <div class="admin-card" style="margin-bottom:18px">
+      <div class="card-header-row" style="margin-bottom:16px">
+        <h2 style="font-size:16px"><i class="fa-solid fa-tag me-2" style="color:var(--gold)"></i>${cat.category}</h2>
+        <div style="display:flex;gap:8px">
+          <button class="btn-add-sm" onclick="openAddSponsorModalForCategory('${cat._id}')">
+            <i class="fa-solid fa-plus"></i> Add Sponsor
+          </button>
+          <button class="btn-danger-sm" onclick="deleteCategory('${cat._id}', '${cat.category.replace(/'/g,"\\'")}')">
+            <i class="fa-solid fa-trash"></i> Delete Category
+          </button>
+        </div>
+      </div>
+
+      ${visibleSponsors.length === 0
+        ? `<div style="color:var(--text-muted);font-size:13px;text-align:center;padding:16px">
+             ${q ? 'No sponsors match your search in this category.' : 'No sponsors in this category yet.'}
+           </div>`
+        : `<div class="admin-table-wrap">
+             <table class="admin-table">
+               <thead><tr><th>#</th><th>Logo</th><th>Brand Name</th><th style="width:110px">Actions</th></tr></thead>
+               <tbody>
+                 ${visibleSponsors.map((sp, vi) => `
+                   <tr>
+                     <td style="color:var(--text-muted);font-family:var(--font-mono)">${String(vi + 1).padStart(2, '0')}</td>
+                     <td>
+                       ${sp.logo
+                         ? `<img src="${BASE_URL + sp.logo}" alt="${sp.name}" style="height:36px;max-width:80px;object-fit:contain;border-radius:4px;background:#fff;padding:3px" />`
+                         : `<div style="width:60px;height:32px;background:var(--bg-secondary);border:1px solid var(--border);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--text-muted)">No logo</div>`}
+                     </td>
+                     <td><strong>${sp.name}</strong></td>
+                     <td>
+                       <div style="display:flex;gap:6px">
+                         <button class="btn-edit-sm"   onclick="openEditSponsorModal('${cat._id}','${sp._id}')"><i class="fa-solid fa-pen"></i></button>
+                         <button class="btn-danger-sm" onclick="deleteSponsor('${cat._id}','${sp._id}','${sp.name.replace(/'/g,"\\'")}')"><i class="fa-solid fa-trash"></i></button>
+                       </div>
+                     </td>
+                   </tr>`).join('')}
+               </tbody>
+             </table>
+           </div>`}
+    </div>`;
+  }).join('');
+}
+
+function filterSponsors() {
+  renderSponsors();
+}
+
+// ── Category: Create ──────────────────────────────────────
+function openAddCategoryModal() {
+  document.getElementById('new-category-name').value = '';
+  openModal('categoryModal');
+}
+
+async function saveCategory() {
+  const name = document.getElementById('new-category-name').value.trim();
+  if (!name) { Toast.show('Category name is required.', 'error'); return; }
+
+  const btn = document.getElementById('save-category-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Creating…';
+
+  try {
+    await SponsorsAPI.createCategory(name);
+    Toast.show('Category created!', 'success');
+    closeModal('categoryModal');
+    await loadSponsors();
+  } catch (err) {
+    Toast.show('Failed: ' + err.message, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Create';
+  }
+}
+
+// ── Category: Delete ──────────────────────────────────────
+async function deleteCategory(id, name) {
+  confirmDelete(`Delete category "${name}" and all its sponsors?`, async () => {
+    try {
+      await SponsorsAPI.deleteCategory(id);
+      Toast.show('Category deleted.', 'success');
+      await loadSponsors();
+    } catch (err) {
+      Toast.show('Delete failed: ' + err.message, 'error');
+    }
+  });
+}
+
+// ── Sponsor: Add ──────────────────────────────────────────
+function openAddSponsorModal() {
+  _resetSponsorModal('Add Sponsor');
+  openModal('sponsorModal');
+}
+
+function openAddSponsorModalForCategory(categoryId) {
+  _resetSponsorModal('Add Sponsor');
+  document.getElementById('sponsor-category-select').value = categoryId;
+  openModal('sponsorModal');
+}
+
+function _resetSponsorModal(title) {
+  document.getElementById('sponsorModalTitle').textContent = title;
+  document.getElementById('sponsor-edit-category-id').value = '';
+  document.getElementById('sponsor-edit-sponsor-id').value  = '';
+  document.getElementById('sponsor-name').value             = '';
+  document.getElementById('sponsor-category-select').value  = '';
+  document.getElementById('sponsor-logo-file').value        = '';
+  document.getElementById('sponsor-logo-preview').style.display     = 'none';
+  document.getElementById('sponsor-logo-placeholder').style.display = 'block';
+}
+
+// ── Sponsor: Edit ─────────────────────────────────────────
+function openEditSponsorModal(categoryId, sponsorId) {
+  const cat = categories.find(c => c._id === categoryId);
+  const sp  = cat && cat.sponsors.find(s => s._id === sponsorId);
+  if (!sp) return;
+
+  document.getElementById('sponsorModalTitle').textContent         = 'Edit Sponsor';
+  document.getElementById('sponsor-edit-category-id').value        = categoryId;
+  document.getElementById('sponsor-edit-sponsor-id').value         = sponsorId;
+  document.getElementById('sponsor-name').value                    = sp.name;
+  document.getElementById('sponsor-category-select').value         = categoryId;
+  document.getElementById('sponsor-logo-file').value               = '';
+
+  const preview     = document.getElementById('sponsor-logo-preview');
+  const placeholder = document.getElementById('sponsor-logo-placeholder');
+  if (sp.logo) {
+    preview.src = BASE_URL + sp.logo;
+    preview.style.display     = 'block';
+    placeholder.style.display = 'none';
+  } else {
+    preview.style.display     = 'none';
+    placeholder.style.display = 'block';
+  }
+
+  openModal('sponsorModal');
+}
+
+// ── Sponsor: Save ─────────────────────────────────────────
+async function saveSponsor() {
+  const name       = document.getElementById('sponsor-name').value.trim();
+  const categoryId = document.getElementById('sponsor-category-select').value;
+  const editCatId  = document.getElementById('sponsor-edit-category-id').value;
+  const editSpId   = document.getElementById('sponsor-edit-sponsor-id').value;
+  const logoFile   = document.getElementById('sponsor-logo-file').files[0];
+
+  if (!name)       { Toast.show('Brand name is required.', 'error');     return; }
+  if (!categoryId) { Toast.show('Please select a category.', 'error');   return; }
+
+  const formData = new FormData();
+  formData.append('name', name);
+  if (logoFile) formData.append('image', logoFile);
+
+  const btn = document.getElementById('save-sponsor-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving…';
+
+  try {
+    if (editSpId) {
+      await SponsorsAPI.updateSponsor(editCatId, editSpId, formData);
+      Toast.show('Sponsor updated!', 'success');
+    } else {
+      await SponsorsAPI.addSponsor(categoryId, formData);
+      Toast.show('Sponsor added!', 'success');
+    }
+    closeModal('sponsorModal');
+    await loadSponsors();
+  } catch (err) {
+    Toast.show('Save failed: ' + err.message, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Save';
+  }
+}
+
+// ── Sponsor: Delete ───────────────────────────────────────
+async function deleteSponsor(categoryId, sponsorId, name) {
+  confirmDelete(`Remove "${name}"?`, async () => {
+    try {
+      await SponsorsAPI.deleteSponsor(categoryId, sponsorId);
+      Toast.show('Sponsor removed.', 'success');
+      await loadSponsors();
+    } catch (err) {
+      Toast.show('Delete failed: ' + err.message, 'error');
+    }
+  });
+}
+
+// ── Logo file preview ─────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  loadSponsors();
+
+  document.getElementById('sponsor-logo-file').addEventListener('change', function () {
+    const file = this.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+      const preview = document.getElementById('sponsor-logo-preview');
+      preview.src = e.target.result;
+      preview.style.display = 'block';
+      document.getElementById('sponsor-logo-placeholder').style.display = 'none';
+    };
+    reader.readAsDataURL(file);
+  });
+});
+</script>
+</body>
+</html>

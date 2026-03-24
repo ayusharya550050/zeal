@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="ZEAL Sponsors — Partners who power the annual cultural festival." />
+  <meta name="theme-color" content="#D4AF37" />
+  <title>Sponsors — ZEAL Cultural Festival</title>
+  <link rel="manifest" href="pwa/manifest.json" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/cursor.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+  <link rel="stylesheet" href="css/light-theme.css" />
+
+  <!-- Early theme init (prevents flash) -->
+  <script>
+    (function(){
+      var t = localStorage.getItem('zeal-theme');
+      if (t === 'light') document.documentElement.classList.add('light-theme-preload');
+    })();
+  </script>
+  <style>
+    .light-theme-preload { background-color: #F8F6F0 !important; }
+  </style>
+</head>
+<body>
+  <div class="cursor-dot" aria-hidden="true"></div>
+  <div class="cursor-ring" aria-hidden="true"></div>
+  <div class="cursor-myth-icon" aria-hidden="true"></div>
+  <canvas id="particles-canvas" aria-hidden="true"></canvas>
+
+  <!-- NAVBAR -->
+  <nav class="navbar-zeal scrolled">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center">
+        <a href="index.html" class="navbar-brand-zeal">ZEAL<span>St. Andrews Group of Institutions</span></a>
+        <button class="navbar-toggler d-lg-none" type="button" id="navToggle" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <div class="d-none d-lg-flex align-items-center gap-1">
+          <a href="index.html" class="nav-link-zeal">Home</a>
+          <a href="events.html" class="nav-link-zeal">Events</a>
+          <a href="team.html" class="nav-link-zeal">Our Team</a>
+          <a href="sponsors.html" class="nav-link-zeal active">Sponsors</a>
+          <a href="announcements.html" class="nav-link-zeal">Announcements</a>
+          <button class="btn-install-app ms-1" id="nav-install-btn" aria-label="Install App">
+            <i class="fas fa-download"></i> Install
+          </button>
+          <button class="theme-toggle-btn ms-1" id="themeToggle" aria-label="Toggle theme">
+            <span class="theme-icon">🌙</span>
+            <span class="theme-label">Dark</span>
+          </button>
+        </div>
+      </div>
+      <div class="collapse" id="mobileMenu">
+        <div class="d-flex flex-column gap-2 py-2">
+          <a href="index.html" class="nav-link-zeal">Home</a>
+          <a href="events.html" class="nav-link-zeal">Events</a>
+          <a href="team.html" class="nav-link-zeal">Our Team</a>
+          <a href="sponsors.html" class="nav-link-zeal">Sponsors</a>
+          <a href="announcements.html" class="nav-link-zeal">Announcements</a>
+          <div class="d-flex gap-2 mt-1">
+            <button class="btn-install-app flex-grow-1 justify-content-center" id="nav-install-btn-mobile" aria-label="Install App">
+              <i class="fas fa-download"></i> Install App
+            </button>
+            <button class="theme-toggle-btn flex-grow-1 justify-content-center" id="themeToggleMobile" aria-label="Toggle theme">
+              <span class="theme-icon">🌙</span>
+              <span class="theme-label">Dark</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <!-- PAGE HERO -->
+    <section class="page-hero">
+      <div class="container text-center">
+        <span class="section-eyebrow">Those Who Believe in ZEAL</span>
+        <h1 class="page-hero-title">Sponsors</h1>
+        <div class="greek-ornament justify-content-center">
+          <div class="greek-ornament-line"></div>
+          <div class="greek-ornament-diamond"></div>
+          <div class="greek-ornament-line"></div>
+        </div>
+        <p style="color:var(--text-secondary);font-size:0.95rem;max-width:600px;margin:1rem auto 0;">ZEAL is powered by visionary partners who believe in nurturing the next generation of talent and creativity.</p>
+      </div>
+    </section>
+
+    <!-- SPONSORS SECTION -->
+    <section class="section-zeal sponsors-section" style="padding-top:20px;">
+      <div class="container">
+
+        <!-- Sponsors — populated from backend by zeal-data.js -->
+        <div id="sponsors-dynamic" data-aos="fade-up">
+          <!-- Static fallback shown until backend data loads -->
+          <div class="text-center mb-4">
+            <div class="sponsor-tier-title title-sponsor">
+              <i class="fas fa-crown me-2"></i>Title Sponsor
+            </div>
+            <div class="row justify-content-center">
+              <div class="col-md-6 col-lg-4">
+                <div class="sponsor-card" style="min-height:180px;border-color:var(--gold);box-shadow:0 0 30px var(--gold-glow);">
+                  <i class="fas fa-building" style="font-size:2.5rem;color:var(--gold);margin-bottom:1rem;"></i>
+                  <div class="sponsor-logo-placeholder" style="font-size:1.5rem;">Your Brand Here</div>
+                  <div class="sponsor-logo-sub">Title Sponsor · ZEAL 2025</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        <div class="sponsor-tier-separator"></div>
+
+        <!-- Gold Sponsors -->
+        <div class="text-center mb-4" data-aos="fade-up">
+          <div class="sponsor-tier-title" style="color:var(--gold);">
+            <i class="fas fa-star me-2"></i>Gold Sponsors
+          </div>
+          <div class="row g-4 justify-content-center">
+            <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="0">
+              <div class="sponsor-card">
+                <i class="fas fa-store" style="font-size:1.8rem;color:var(--gold);margin-bottom:0.75rem;"></i>
+                <div class="sponsor-logo-placeholder">GoldPartner I</div>
+                <div class="sponsor-logo-sub">Gold Sponsor</div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="50">
+              <div class="sponsor-card">
+                <i class="fas fa-laptop" style="font-size:1.8rem;color:var(--gold);margin-bottom:0.75rem;"></i>
+                <div class="sponsor-logo-placeholder">TechBrand II</div>
+                <div class="sponsor-logo-sub">Gold Sponsor</div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="100">
+              <div class="sponsor-card">
+                <i class="fas fa-burger" style="font-size:1.8rem;color:var(--gold);margin-bottom:0.75rem;"></i>
+                <div class="sponsor-logo-placeholder">FoodCo III</div>
+                <div class="sponsor-logo-sub">Gold Sponsor</div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="150">
+              <div class="sponsor-card">
+                <i class="fas fa-shirt" style="font-size:1.8rem;color:var(--gold);margin-bottom:0.75rem;"></i>
+                <div class="sponsor-logo-placeholder">FashionX IV</div>
+                <div class="sponsor-logo-sub">Gold Sponsor</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="sponsor-tier-separator"></div>
+
+        <!-- Silver Sponsors -->
+        <div class="text-center mb-4" data-aos="fade-up">
+          <div class="sponsor-tier-title" style="color:rgba(192,192,192,0.9);">
+            <i class="fas fa-medal me-2"></i>Silver Sponsors
+          </div>
+          <div class="row g-3 justify-content-center">
+            <div class="col-6 col-md-3 col-lg-2" data-aos="fade-up" data-aos-delay="0">
+              <div class="sponsor-card" style="min-height:110px;padding:1.25rem;">
+                <div class="sponsor-logo-placeholder" style="font-size:0.9rem;">SilverBrand I</div>
+                <div class="sponsor-logo-sub">Silver</div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3 col-lg-2" data-aos="fade-up" data-aos-delay="50">
+              <div class="sponsor-card" style="min-height:110px;padding:1.25rem;">
+                <div class="sponsor-logo-placeholder" style="font-size:0.9rem;">SilverBrand II</div>
+                <div class="sponsor-logo-sub">Silver</div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3 col-lg-2" data-aos="fade-up" data-aos-delay="100">
+              <div class="sponsor-card" style="min-height:110px;padding:1.25rem;">
+                <div class="sponsor-logo-placeholder" style="font-size:0.9rem;">SilverBrand III</div>
+                <div class="sponsor-logo-sub">Silver</div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3 col-lg-2" data-aos="fade-up" data-aos-delay="150">
+              <div class="sponsor-card" style="min-height:110px;padding:1.25rem;">
+                <div class="sponsor-logo-placeholder" style="font-size:0.9rem;">SilverBrand IV</div>
+                <div class="sponsor-logo-sub">Silver</div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3 col-lg-2" data-aos="fade-up" data-aos-delay="200">
+              <div class="sponsor-card" style="min-height:110px;padding:1.25rem;">
+                <div class="sponsor-logo-placeholder" style="font-size:0.9rem;">SilverBrand V</div>
+                <div class="sponsor-logo-sub">Silver</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="sponsor-tier-separator"></div>
+
+        <!-- Associate Sponsors -->
+        <div class="mb-4" data-aos="fade-up">
+          <div class="sponsor-tier-title text-center" style="color:var(--gold-bronze);">Associate Sponsors</div>
+          <div class="row g-3">
+            <div class="col-4 col-md-2" data-aos="fade-up" data-aos-delay="0">
+              <div class="sponsor-card" style="min-height:90px;padding:1rem;">
+                <div class="sponsor-logo-placeholder" style="font-size:0.8rem;">Assoc I</div>
+              </div>
+            </div>
+            <div class="col-4 col-md-2" data-aos="fade-up" data-aos-delay="30">
+              <div class="sponsor-card" style="min-height:90px;padding:1rem;">
+                <div class="sponsor-logo-placeholder" style="font-size:0.8rem;">Assoc II</div>
+              </div>
+            </div>
+            <div class="col-4 col-md-2" data-aos="fade-up" data-aos-delay="60">
+              <div class="sponsor-card" style="min-height:90px;padding:1rem;">
+                <div class="sponsor-logo-placeholder" style="font-size:0.8rem;">Assoc III</div>
+              </div>
+            </div>
+            <div class="col-4 col-md-2" data-aos="fade-up" data-aos-delay="90">
+              <div class="sponsor-card" style="min-height:90px;padding:1rem;">
+                <div class="sponsor-logo-placeholder" style="font-size:0.8rem;">Assoc IV</div>
+              </div>
+            </div>
+            <div class="col-4 col-md-2" data-aos="fade-up" data-aos-delay="120">
+              <div class="sponsor-card" style="min-height:90px;padding:1rem;">
+                <div class="sponsor-logo-placeholder" style="font-size:0.8rem;">Assoc V</div>
+              </div>
+            </div>
+            <div class="col-4 col-md-2" data-aos="fade-up" data-aos-delay="150">
+              <div class="sponsor-card" style="min-height:90px;padding:1rem;">
+                <div class="sponsor-logo-placeholder" style="font-size:0.8rem;">Assoc VI</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="sponsor-tier-separator"></div>
+
+        <!-- Media Partners -->
+        <div class="mb-4" data-aos="fade-up">
+          <div class="sponsor-tier-title text-center">
+            <i class="fas fa-newspaper me-2" style="color:var(--gold);"></i>Media Partners
+          </div>
+          <div class="row g-3 justify-content-center">
+            <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="0">
+              <div class="sponsor-card">
+                <i class="fas fa-broadcast-tower" style="font-size:1.5rem;color:var(--gold);margin-bottom:0.5rem;"></i>
+                <div class="sponsor-logo-placeholder" style="font-size:0.9rem;">MediaPartner I</div>
+                <div class="sponsor-logo-sub">Media Partner</div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="50">
+              <div class="sponsor-card">
+                <i class="fas fa-camera" style="font-size:1.5rem;color:var(--gold);margin-bottom:0.5rem;"></i>
+                <div class="sponsor-logo-placeholder" style="font-size:0.9rem;">MediaPartner II</div>
+                <div class="sponsor-logo-sub">Media Partner</div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="100">
+              <div class="sponsor-card">
+                <i class="fas fa-photo-film" style="font-size:1.5rem;color:var(--gold);margin-bottom:0.5rem;"></i>
+                <div class="sponsor-logo-placeholder" style="font-size:0.9rem;">MediaPartner III</div>
+                <div class="sponsor-logo-sub">Media Partner</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        </div><!-- end #sponsors-dynamic -->
+
+        <!-- Become a Sponsor CTA -->
+        <div class="about-card text-center" style="max-width:700px;margin:3rem auto 0;" data-aos="zoom-in">
+          <i class="fas fa-handshake" style="font-size:2rem;color:var(--gold);margin-bottom:1rem;"></i>
+          <h3 style="font-family:var(--font-heading);font-size:1.5rem;color:var(--text-primary);margin-bottom:0.75rem;">Become a Sponsor</h3>
+          <p style="font-size:0.88rem;color:var(--text-secondary);line-height:1.8;margin-bottom:1.5rem;">Partner with ZEAL and reach 5,000+ students, faculty, and visitors. Boost your brand visibility and be part of the most electrifying cultural festival in the region.</p>
+          <a href="mailto:zeal@standrews.edu.in" class="btn-hero-primary" style="font-size:0.78rem;" data-myth="zeus">
+            <i class="fas fa-envelope me-2"></i>Contact for Sponsorship
+          </a>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer-zeal">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-lg-4">
+          <div class="footer-brand">ZEAL</div>
+          <p class="footer-tagline">Annual Cultural Festival</p>
+          <div class="footer-social">
+            <a href="#" class="social-icon" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-icon" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-icon" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+          </div>
+        </div>
+        <div class="col-6 col-lg-3 offset-lg-1">
+          <div class="footer-heading">Navigate</div>
+          <a href="index.html" class="footer-link">Home</a>
+          <a href="events.html" class="footer-link">Events</a>
+          <a href="team.html" class="footer-link">Our Team</a>
+          <a href="sponsors.html" class="footer-link">Sponsors</a>
+          <a href="announcements.html" class="footer-link">Announcements</a>
+        </div>
+        <div class="col-6 col-lg-3">
+          <div class="footer-heading">Contact</div>
+          <p id="footer-contact-dynamic" style="font-size:0.82rem;color:var(--text-secondary);line-height:1.8;">
+            <i class="fas fa-envelope" style="color:var(--gold);margin-right:0.5rem;"></i>zeal@standrews.edu.in
+          </p>
+        </div>
+      </div>
+      <div class="footer-dev-credit">
+        <p class="footer-dev-label">Website Developed By</p>
+        <p class="footer-dev-names" id="footer-devs-dynamic">Mr. Ayush Arya &nbsp;|&nbsp; Mr. Divyansh Prajapati &nbsp;|&nbsp; Mr. Nimish Nirmal</p>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 <span>ZEAL</span> — St. Andrews Group of Institutions.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js" defer></script>
+  <script src="js/cursor.js" defer></script>
+  <script src="js/particles.js" defer></script>
+  <script src="js/animations.js" defer></script>
+  <script src="js/main.js" defer></script>
+  <script src="js/theme.js" defer></script>
+  <script src="js/pwa.js" defer></script>
+  <script>
+    window.dispatchEvent(new Event("loaderComplete"));
+    const navToggle = document.getElementById("navToggle");
+    const mobileMenu = document.getElementById("mobileMenu");
+    if (navToggle && mobileMenu) {
+      navToggle.addEventListener("click", () => mobileMenu.classList.toggle("collapse"));
+    }
+  </script>
+</body>
+</html>

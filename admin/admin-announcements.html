@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script>
+    (function(){
+      var t = localStorage.getItem('zeal-admin-theme') || 'dark-theme';
+      document.documentElement.className = t;
+    })();
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Announcements — ZEAL Admin</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="css/admin.css" />
+</head>
+<body class="dark-theme">
+<div class="admin-shell">
+
+  <aside class="admin-sidebar">
+    <div class="sidebar-brand">
+      <a href="admin-dashboard.html" class="brand-title">ZEAL</a>
+      <div class="brand-sub">Admin Panel</div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Main</div>
+      <a href="admin-dashboard.html" class="sidebar-link"><span class="nav-icon"><i class="fa-solid fa-gauge-high"></i></span>Dashboard</a>
+      <a href="admin-home.html"      class="sidebar-link"><span class="nav-icon"><i class="fa-solid fa-house"></i></span>Home</a>
+      <div class="nav-section-label">Content</div>
+      <a href="admin-events.html"        class="sidebar-link"><span class="nav-icon"><i class="fa-solid fa-calendar-star"></i></span>Events</a>
+      <a href="admin-team.html"          class="sidebar-link"><span class="nav-icon"><i class="fa-solid fa-users"></i></span>Our Team</a>
+      <a href="admin-sponsors.html"      class="sidebar-link"><span class="nav-icon"><i class="fa-solid fa-handshake"></i></span>Sponsors</a>
+      <a href="admin-announcements.html" class="sidebar-link active"><span class="nav-icon"><i class="fa-solid fa-bullhorn"></i></span>Announcements</a>
+      <a href="admin-footer.html"        class="sidebar-link"><span class="nav-icon"><i class="fa-solid fa-shoe-prints"></i></span>Footer</a>
+    </nav>
+    <div class="sidebar-footer"><small>ZEAL Admin v1.0</small></div>
+  </aside>
+
+  <div class="admin-main">
+    <header class="admin-topbar">
+      <button class="topbar-toggle"><i class="fa-solid fa-bars"></i></button>
+      <span class="topbar-title">Announcements</span>
+      <div class="topbar-spacer"></div>
+      <div class="topbar-actions">
+        <button class="btn-gold" onclick="openAddModal()">
+          <i class="fa-solid fa-plus"></i> New Announcement
+        </button>
+        <button class="theme-toggle-btn" aria-label="Toggle theme" title="Toggle theme">
+          <span class="t-icon-sun">&#9728;</span><span class="t-icon-moon">&#9790;</span>
+        </button>
+        <button class="topbar-btn" onclick="Auth.logout()" title="Logout"><i class="fa-solid fa-right-from-bracket"></i></button>
+        <div class="topbar-avatar">A</div>
+      </div>
+    </header>
+
+    <main class="admin-content">
+      <div class="page-header">
+        <h1>Announcements</h1>
+        <p>Post, edit and manage all festival announcements.</p>
+        <div class="gold-line"></div>
+      </div>
+
+      <!-- Filter Bar -->
+      <div class="admin-card" style="padding:14px 20px;margin-bottom:18px">
+        <div class="row g-2 align-items-center">
+          <div class="col-12 col-md-5">
+            <div class="input-group">
+              <span class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></span>
+              <input class="form-control" id="ann-search" placeholder="Search announcements…" oninput="filterAnnouncements()" />
+            </div>
+          </div>
+          <div class="col-6 col-md-3">
+            <select class="form-select" id="ann-category-filter" onchange="filterAnnouncements()">
+              <option value="">All Categories</option>
+              <option>Important</option>
+              <option>Workshop</option>
+              <option>Results</option>
+              <option>Schedule</option>
+              <option>General</option>
+            </select>
+          </div>
+          <div class="col-6 col-md-2">
+            <input type="date" class="form-control" id="ann-date-filter" onchange="filterAnnouncements()" />
+          </div>
+          <div class="col text-end">
+            <span id="ann-count-badge" class="badge-gold">0 Posts</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Announcements Table -->
+      <div class="admin-card">
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Date</th>
+                <th>Visible</th>
+                <th>Preview</th>
+                <th style="width:130px">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="ann-table-body">
+              <tr><td colspan="7" class="text-center py-4" style="color:var(--text-muted)">Loading…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- ── Add / Edit Modal ─────────────────────────────────── -->
+<div class="modal fade" id="annModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="annModalTitle">New Announcement</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="ann-edit-id" value="" />
+        <div class="row g-3">
+          <div class="col-12 col-md-7">
+            <label class="form-label">Title *</label>
+            <input class="form-control" id="ann-title" placeholder="Announcement title…" />
+          </div>
+          <div class="col-12 col-md-5">
+            <label class="form-label">Category *</label>
+            <select class="form-select" id="ann-category">
+              <option value="">Select category…</option>
+              <option>Important</option>
+              <option>Workshop</option>
+              <option>Results</option>
+              <option>Schedule</option>
+              <option>General</option>
+            </select>
+          </div>
+          <div class="col-12 col-md-4">
+            <label class="form-label">Date *</label>
+            <input type="date" class="form-control" id="ann-date" />
+          </div>
+          <div class="col-12">
+            <label class="form-label">Description</label>
+            <textarea class="form-control" id="ann-description" rows="5" placeholder="Full announcement text…"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-outline" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn-gold" id="save-ann-btn" onclick="saveAnnouncement()"><i class="fa-solid fa-floppy-disk"></i> Publish</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── View Announcement Modal ───────────────────────── -->
+<div class="modal fade" id="annViewModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ann-view-title"></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div style="margin-bottom:12px;display:flex;gap:10px;align-items:center">
+          <span id="ann-view-category" class="badge-gold"></span>
+          <span id="ann-view-date" style="font-size:12px;color:var(--text-muted)"></span>
+        </div>
+        <div id="ann-view-description" style="font-size:14px;color:var(--text-secondary);line-height:1.7;white-space:pre-wrap"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-outline" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+<script src="js/admin.js"></script>
+<script src="js/api.js"></script>
+<script>
+Auth.guardPage();
+
+let announcements = [];
+let filtered = [];
+
+const catBadge = {
+  'Important': 'badge-red',
+  'Workshop':  'badge-blue',
+  'Results':   'badge-green',
+  default:     'badge-gold'
+};
+
+// ── Load ──────────────────────────────────────────────────
+async function loadAnnouncements() {
+  try {
+    announcements = await AnnouncementsAPI.getAll();
+    filtered = [...announcements];
+    renderAnnouncements();
+  } catch (err) {
+    console.error(err);
+    Toast.show('Failed to load announcements: ' + err.message, 'error');
+    document.getElementById('ann-table-body').innerHTML =
+      `<tr><td colspan="7" style="color:var(--text-muted);text-align:center;padding:20px">Could not load announcements.</td></tr>`;
+  }
+}
+
+// ── Render ────────────────────────────────────────────────
+function renderAnnouncements() {
+  const tbody = document.getElementById('ann-table-body');
+  document.getElementById('ann-count-badge').textContent = `${filtered.length} Post${filtered.length !== 1 ? 's' : ''}`;
+
+  if (!filtered.length) {
+    tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state"><i class="fa-solid fa-bullhorn"></i><p>No announcements found.</p></div></td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = filtered.map((a, vi) => {
+    const cls     = catBadge[a.category] || catBadge.default;
+    const preview = (a.description || '').substring(0, 60) + ((a.description || '').length > 60 ? '…' : '');
+    const visIcon = a.isVisible
+      ? `<span style="color:#4ade80;font-size:12px"><i class="fa-solid fa-eye"></i> On</span>`
+      : `<span style="color:var(--text-muted);font-size:12px"><i class="fa-solid fa-eye-slash"></i> Off</span>`;
+    return `
+    <tr>
+      <td style="color:var(--text-muted);font-family:var(--font-mono)">${String(vi + 1).padStart(2, '0')}</td>
+      <td><strong>${a.title}</strong></td>
+      <td><span class="${cls}">${a.category}</span></td>
+      <td style="white-space:nowrap;color:var(--text-secondary)">${formatDate(a.date)}</td>
+      <td>
+        <button class="btn-add-sm" style="padding:3px 8px;font-size:11px" onclick="toggleVisibility('${a._id}')" title="Toggle visibility">
+          ${visIcon}
+        </button>
+      </td>
+      <td style="color:var(--text-muted);font-size:12px;max-width:180px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">${preview || '—'}</td>
+      <td>
+        <div style="display:flex;gap:6px">
+          <button class="btn-add-sm"    onclick="viewAnn('${a._id}')"    title="View"><i class="fa-solid fa-eye"></i></button>
+          <button class="btn-edit-sm"   onclick="openEditModal('${a._id}')" title="Edit"><i class="fa-solid fa-pen"></i></button>
+          <button class="btn-danger-sm" onclick="deleteAnn('${a._id}', '${a.title.replace(/'/g,"\\'")}')"><i class="fa-solid fa-trash"></i></button>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+// ── Filter ────────────────────────────────────────────────
+function filterAnnouncements() {
+  const q    = document.getElementById('ann-search').value.toLowerCase();
+  const cat  = document.getElementById('ann-category-filter').value;
+  const date = document.getElementById('ann-date-filter').value;
+  filtered = announcements.filter(a => {
+    const mq = !q   || a.title.toLowerCase().includes(q) || (a.description || '').toLowerCase().includes(q);
+    const mc = !cat  || a.category === cat;
+    const md = !date || a.date === date;
+    return mq && mc && md;
+  });
+  renderAnnouncements();
+}
+
+// ── Open Add ──────────────────────────────────────────────
+function openAddModal() {
+  document.getElementById('annModalTitle').textContent = 'New Announcement';
+  document.getElementById('ann-edit-id').value      = '';
+  document.getElementById('ann-title').value         = '';
+  document.getElementById('ann-category').value      = '';
+  document.getElementById('ann-date').value          = new Date().toISOString().slice(0, 10);
+  document.getElementById('ann-description').value   = '';
+  openModal('annModal');
+}
+
+// ── Open Edit ─────────────────────────────────────────────
+function openEditModal(id) {
+  const a = announcements.find(x => x._id === id);
+  if (!a) return;
+  document.getElementById('annModalTitle').textContent = 'Edit Announcement';
+  document.getElementById('ann-edit-id').value      = a._id;
+  document.getElementById('ann-title').value         = a.title;
+  document.getElementById('ann-category').value      = a.category;
+  document.getElementById('ann-date').value          = a.date;
+  document.getElementById('ann-description').value   = a.description || '';
+  openModal('annModal');
+}
+
+// ── View ──────────────────────────────────────────────────
+function viewAnn(id) {
+  const a = announcements.find(x => x._id === id);
+  if (!a) return;
+  document.getElementById('ann-view-title').textContent       = a.title;
+  document.getElementById('ann-view-category').textContent    = a.category;
+  document.getElementById('ann-view-date').textContent        = formatDate(a.date);
+  document.getElementById('ann-view-description').textContent = a.description || 'No description provided.';
+  openModal('annViewModal');
+}
+
+// ── Save ──────────────────────────────────────────────────
+async function saveAnnouncement() {
+  const title    = document.getElementById('ann-title').value.trim();
+  const category = document.getElementById('ann-category').value;
+  const date     = document.getElementById('ann-date').value;
+  const desc     = document.getElementById('ann-description').value.trim();
+  const editId   = document.getElementById('ann-edit-id').value;
+
+  if (!title)    { Toast.show('Title is required.', 'error');    return; }
+  if (!category) { Toast.show('Category is required.', 'error'); return; }
+  if (!date)     { Toast.show('Date is required.', 'error');     return; }
+
+  const payload = { title, category, date, description: desc };
+  const btn = document.getElementById('save-ann-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving…';
+
+  try {
+    if (editId) {
+      await AnnouncementsAPI.update(editId, payload);
+      Toast.show('Announcement updated!', 'success');
+    } else {
+      await AnnouncementsAPI.create(payload);
+      Toast.show('Announcement published!', 'success');
+    }
+    closeModal('annModal');
+    await loadAnnouncements();
+  } catch (err) {
+    Toast.show('Save failed: ' + err.message, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Publish';
+  }
+}
+
+// ── Toggle Visibility ─────────────────────────────────────
+async function toggleVisibility(id) {
+  try {
+    await AnnouncementsAPI.toggleVisibility(id);
+    await loadAnnouncements();
+  } catch (err) {
+    Toast.show('Failed to toggle visibility: ' + err.message, 'error');
+  }
+}
+
+// ── Delete ────────────────────────────────────────────────
+async function deleteAnn(id, title) {
+  confirmDelete(`Delete "${title}"?`, async () => {
+    try {
+      await AnnouncementsAPI.delete(id);
+      Toast.show('Announcement deleted.', 'success');
+      await loadAnnouncements();
+    } catch (err) {
+      Toast.show('Delete failed: ' + err.message, 'error');
+    }
+  });
+}
+
+// ── Init ──────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', loadAnnouncements);
+</script>
+</body>
+</html>

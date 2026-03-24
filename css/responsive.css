@@ -1,0 +1,173 @@
+/* ========================================
+   ZEAL Cultural Festival - Responsive
+   ======================================== */
+
+/* ====== TABLET ====== */
+@media (max-width: 991px) {
+  .section-zeal {
+    padding: 70px 0;
+  }
+
+  .hero-title {
+    font-size: clamp(4rem, 15vw, 8rem);
+  }
+
+  .timeline-items {
+    padding: 0 2rem;
+    gap: 2rem;
+  }
+
+  .timeline-card {
+    width: 160px;
+  }
+}
+
+/* ====== MOBILE ====== */
+@media (max-width: 767px) {
+  .section-zeal {
+    padding: 50px 0;
+  }
+
+  .hero-section {
+    min-height: 100svh;
+  }
+
+  .hero-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .btn-hero-primary,
+  .btn-hero-secondary {
+    width: 100%;
+    max-width: 280px;
+    text-align: center;
+  }
+
+  .about-card {
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .timeline-card {
+    width: 140px;
+    padding: 1rem;
+  }
+
+  .timeline-year {
+    font-size: 1.2rem;
+  }
+
+  .timeline-name {
+    font-size: 0.8rem;
+  }
+
+  .page-hero {
+    padding: 120px 0 50px;
+  }
+
+  .events-filter-bar {
+    gap: 0.5rem;
+  }
+
+  .filter-btn {
+    font-size: 0.65rem;
+    padding: 0.4rem 0.9rem;
+  }
+
+  .team-avatar {
+    width: 70px;
+    height: 70px;
+    font-size: 1.4rem;
+  }
+
+  .team-card.featured .team-avatar {
+    width: 90px;
+    height: 90px;
+  }
+
+  .footer-zeal {
+    padding: 3rem 0 2rem;
+  }
+
+  .footer-social {
+    margin-top: 1rem;
+  }
+}
+
+/* ====== SMALL MOBILE ====== */
+@media (max-width: 480px) {
+  .navbar-brand-zeal {
+    font-size: 1.5rem;
+  }
+
+  .hero-eyebrow::before,
+  .hero-eyebrow::after {
+    width: 20px;
+  }
+
+  .section-title {
+    font-size: clamp(1.5rem, 8vw, 2.5rem);
+  }
+
+  .loader-content .brand-name {
+    font-size: clamp(3rem, 18vw, 5rem);
+  }
+
+  .announcement-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* ====== DESKTOP ====== */
+@media (min-width: 1400px) {
+  .container {
+    max-width: 1320px;
+  }
+
+  .hero-title {
+    font-size: clamp(8rem, 14vw, 14rem);
+  }
+}
+
+/* ====== LANDSCAPE MOBILE ====== */
+@media (max-height: 500px) and (orientation: landscape) {
+  .hero-section {
+    min-height: 100vw;
+    padding-top: 80px;
+  }
+
+  .hero-title {
+    font-size: 4rem;
+  }
+
+  #loader .loader-content .brand-name {
+    font-size: 3rem;
+  }
+}
+
+/* ====== ACCESSIBILITY ====== */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* ====== PRINT ====== */
+@media print {
+  .navbar-zeal,
+  .hero-scroll-indicator,
+  #particles-canvas,
+  .cursor-dot,
+  .cursor-ring {
+    display: none !important;
+  }
+
+  body {
+    background: white;
+    color: black;
+  }
+}

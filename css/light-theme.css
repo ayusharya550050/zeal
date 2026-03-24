@@ -1,0 +1,391 @@
+/* ========================================
+   ZEAL Cultural Festival - Light Theme
+   ======================================== */
+
+body.light-theme {
+  --bg-primary: #F8F6F0;
+  --bg-secondary: #EDE9E0;
+  --bg-card: #FFFFFF;
+  --gold: #B8962E;
+  --gold-bronze: #8B6914;
+  --gold-glow: rgba(184, 150, 46, 0.35);
+  --gold-glow-soft: rgba(184, 150, 46, 0.12);
+  --text-primary: #1A1A1A;
+  --text-secondary: #5A5A6A;
+  --border-gold: rgba(184, 150, 46, 0.35);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+/* ====== SCROLLBAR ====== */
+body.light-theme ::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+body.light-theme ::-webkit-scrollbar-thumb {
+  background: var(--gold);
+}
+
+/* ====== NAVBAR ====== */
+body.light-theme .navbar-zeal.scrolled {
+  background: rgba(248, 246, 240, 0.95);
+  border-bottom: 1px solid var(--border-gold);
+  box-shadow: 0 4px 30px rgba(0,0,0,0.08);
+}
+body.light-theme .navbar-zeal:not(.scrolled) {
+  background: transparent;
+}
+
+/* ====== HERO ====== */
+body.light-theme .hero-section {
+  background: var(--bg-primary);
+}
+body.light-theme .hero-bg-gradient {
+  background:
+    radial-gradient(ellipse 80% 50% at 50% 0%, rgba(184,150,46,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 60% at 80% 100%, rgba(139,105,20,0.08) 0%, transparent 50%),
+    linear-gradient(180deg, #F8F6F0 0%, var(--bg-primary) 30%, var(--bg-primary) 70%, #EDE9E0 100%);
+}
+body.light-theme .hero-title {
+  background: linear-gradient(135deg, #1A1A1A 0%, var(--gold) 40%, var(--gold-bronze) 60%, #1A1A1A 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  filter: drop-shadow(0 0 30px rgba(184,150,46,0.25));
+}
+body.light-theme .hero-subtitle {
+  color: var(--text-secondary);
+}
+body.light-theme .btn-hero-secondary {
+  color: var(--text-primary);
+  border-color: rgba(26,26,26,0.3);
+}
+body.light-theme .btn-hero-secondary:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+  background: var(--gold-glow-soft);
+}
+
+/* ====== SECTIONS ====== */
+body.light-theme .about-section {
+  background: var(--bg-secondary);
+}
+body.light-theme .about-card {
+  background: var(--bg-card);
+  border-color: var(--border-gold);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+body.light-theme .about-card:hover {
+  box-shadow: 0 8px 30px rgba(184,150,46,0.18), inset 0 0 30px rgba(184,150,46,0.03);
+}
+body.light-theme .gallery-section {
+  background: var(--bg-primary);
+}
+body.light-theme .gallery-slide {
+  background: var(--bg-card);
+  border-color: var(--border-gold);
+}
+body.light-theme .gallery-placeholder {
+  background: linear-gradient(135deg, var(--bg-secondary), #E8E3D8);
+}
+body.light-theme .gallery-placeholder i,
+body.light-theme .gallery-placeholder span {
+  color: var(--gold-bronze);
+}
+body.light-theme .timeline-section {
+  background: var(--bg-secondary);
+}
+body.light-theme .timeline-card {
+  background: var(--bg-card);
+  border-color: var(--border-gold);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+}
+body.light-theme .timeline-card:hover {
+  box-shadow: 0 8px 25px rgba(184,150,46,0.2);
+}
+body.light-theme .timeline-name {
+  color: var(--text-primary);
+}
+body.light-theme .faq-section {
+  background: var(--bg-primary);
+}
+body.light-theme .accordion-zeal .accordion-item {
+  background: var(--bg-card);
+  border-color: var(--border-gold);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+body.light-theme .accordion-zeal .accordion-button {
+  background: var(--bg-card);
+  color: var(--text-primary);
+}
+body.light-theme .accordion-zeal .accordion-button:not(.collapsed) {
+  background: var(--bg-card);
+  color: var(--gold);
+}
+body.light-theme .accordion-zeal .accordion-body {
+  color: var(--text-secondary);
+  border-top-color: var(--border-gold);
+}
+body.light-theme .section-zeal[id="register"] {
+  background: var(--bg-secondary) !important;
+}
+
+/* ====== EVENTS PAGE ====== */
+body.light-theme .event-card {
+  background: var(--bg-card);
+  border-color: var(--border-gold);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+}
+body.light-theme .event-card:hover {
+  box-shadow: 0 20px 40px rgba(0,0,0,0.12), 0 0 20px rgba(184,150,46,0.18);
+}
+body.light-theme .event-card-header {
+  background: linear-gradient(135deg, #F0EDE5, var(--bg-card));
+  border-bottom-color: var(--border-gold);
+}
+body.light-theme .event-name {
+  color: var(--text-primary);
+}
+body.light-theme .filter-btn {
+  color: var(--text-secondary);
+  border-color: var(--border-gold);
+}
+body.light-theme .filter-btn:hover,
+body.light-theme .filter-btn.active {
+  background: var(--gold-glow-soft);
+  border-color: var(--gold);
+  color: var(--gold);
+}
+body.light-theme .btn-event-register {
+  border-color: var(--border-gold);
+  color: var(--gold);
+}
+body.light-theme .btn-event-register:hover {
+  background: var(--gold);
+  color: #fff;
+}
+
+/* ====== TEAM PAGE ====== */
+body.light-theme .team-section {
+  background: var(--bg-primary);
+}
+body.light-theme .team-card {
+  background: var(--bg-card);
+  border-color: var(--border-gold);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+}
+body.light-theme .team-card:hover {
+  box-shadow: 0 8px 30px rgba(184,150,46,0.18);
+}
+body.light-theme .team-name {
+  color: var(--text-primary);
+}
+body.light-theme .team-card.featured {
+  background: linear-gradient(135deg, var(--bg-card), #F0EDE5);
+}
+body.light-theme .team-avatar {
+  background: linear-gradient(135deg, var(--bg-secondary), var(--bg-card));
+  border-color: var(--border-gold);
+}
+
+/* ====== SPONSORS PAGE ====== */
+body.light-theme .sponsors-section {
+  background: var(--bg-secondary);
+}
+body.light-theme .sponsor-card {
+  background: var(--bg-card);
+  border-color: var(--border-gold);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+body.light-theme .sponsor-card:hover {
+  box-shadow: 0 8px 25px rgba(184,150,46,0.18);
+}
+
+/* ====== ANNOUNCEMENTS PAGE ====== */
+body.light-theme .announcements-section {
+  background: var(--bg-primary);
+}
+body.light-theme .announcement-card {
+  background: var(--bg-card);
+  border-color: var(--border-gold);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+}
+body.light-theme .announcement-card:hover {
+  box-shadow: 0 8px 25px rgba(184,150,46,0.18);
+}
+body.light-theme .announcement-header {
+  border-bottom-color: var(--border-gold);
+}
+body.light-theme .announcement-footer {
+  border-top-color: var(--border-gold);
+}
+body.light-theme .announcement-body p {
+  color: var(--text-secondary);
+}
+
+/* ====== FOOTER ====== */
+body.light-theme .footer-zeal {
+  background: #E8E3D5;
+  border-top-color: var(--border-gold);
+}
+body.light-theme .footer-tagline {
+  color: var(--text-secondary);
+}
+body.light-theme .footer-link {
+  color: var(--text-secondary);
+}
+body.light-theme .footer-link:hover {
+  color: var(--gold);
+}
+body.light-theme .footer-bottom p {
+  color: var(--text-secondary);
+}
+body.light-theme .social-icon {
+  color: var(--text-secondary);
+  border-color: var(--border-gold);
+}
+body.light-theme .social-icon:hover {
+  color: var(--gold);
+  border-color: var(--gold);
+  background: var(--gold-glow-soft);
+}
+
+/* ====== PAGE HERO ====== */
+body.light-theme .page-hero::before {
+  background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(184,150,46,0.1) 0%, transparent 60%);
+}
+body.light-theme .page-hero-title {
+  background: linear-gradient(135deg, var(--text-primary), var(--gold), var(--gold-bronze));
+  -webkit-background-clip: text;
+  background-clip: text;
+  filter: drop-shadow(0 0 15px rgba(184,150,46,0.2));
+}
+
+/* ====== PARTICLES ====== */
+body.light-theme #particles-canvas {
+  opacity: 0.12;
+}
+
+/* ====== NAVBAR TOGGLER ====== */
+body.light-theme .navbar-toggler {
+  border-color: var(--border-gold) !important;
+}
+body.light-theme .navbar-collapse {
+  background: rgba(248, 246, 240, 0.97);
+  border-color: var(--border-gold);
+}
+
+/* ====== BTN REGISTER ====== */
+body.light-theme .btn-register {
+  border-color: var(--gold);
+  color: var(--gold) !important;
+}
+body.light-theme .btn-register:hover {
+  color: #fff !important;
+}
+
+/* ====== PWA BANNER ====== */
+body.light-theme #pwa-install-banner {
+  background: rgba(248, 246, 240, 0.97) !important;
+  border-color: var(--border-gold) !important;
+}
+body.light-theme #pwa-install-banner span {
+  color: var(--text-primary) !important;
+}
+body.light-theme #pwa-dismiss-btn {
+  color: var(--text-secondary) !important;
+}
+
+/* ====== ACCORDION ARROW ====== */
+body.light-theme .accordion-zeal .accordion-button::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath fill='%23B8962E' d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+}
+
+/* ====== SECTION DIVIDERS ====== */
+body.light-theme .section-divider-line {
+  background: linear-gradient(90deg, transparent, var(--border-gold));
+}
+body.light-theme .section-divider-line:last-child {
+  background: linear-gradient(90deg, var(--border-gold), transparent);
+}
+
+/* ====== ABOUT SECTION ORNAMENT LINES ====== */
+body.light-theme .about-section::before,
+body.light-theme .about-section::after {
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+
+/* ====== TIMELINE LINE ====== */
+body.light-theme .timeline-line {
+  background: linear-gradient(90deg, transparent 0%, var(--gold) 10%, var(--gold) 90%, transparent 100%);
+  box-shadow: 0 0 10px var(--gold-glow);
+}
+
+/* ====== NOISE OVERLAY ====== */
+body.light-theme .noise-overlay {
+  opacity: 0.015;
+}
+
+/* ====== THEME TOGGLE ====== */
+.theme-toggle-btn {
+  background: none;
+  border: 1px solid var(--border-gold);
+  color: var(--gold);
+  border-radius: 20px;
+  padding: 0.35rem 0.9rem;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+.theme-toggle-btn:hover {
+  background: var(--gold-glow-soft);
+  box-shadow: 0 0 12px var(--gold-glow);
+}
+
+/* Install App button in nav */
+.btn-install-app {
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.4rem 1rem;
+  background: transparent;
+  border: 1px solid var(--border-gold);
+  color: var(--text-secondary);
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: none;
+  align-items: center;
+  gap: 0.4rem;
+  white-space: nowrap;
+}
+.btn-install-app:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+  background: var(--gold-glow-soft);
+}
+.btn-install-app.visible {
+  display: flex;
+}
+
+/* ====== FIX MONIKA DHIMAN CARD (inline gradient uses dark colors) ====== */
+body.light-theme .team-card[style*="#1e1e2e"] {
+  background: linear-gradient(135deg, var(--bg-card), #F0EDE5) !important;
+  border-color: var(--gold) !important;
+}
+body.light-theme .team-avatar[style*="rgba(212,175,55,0.1)"] {
+  background: linear-gradient(135deg, rgba(184,150,46,0.1), var(--bg-card)) !important;
+}
+
+/* ====== FOOTER DEV CREDIT LIGHT THEME ====== */
+body.light-theme .footer-dev-credit {
+  border-top-color: var(--border-gold);
+}
+body.light-theme .footer-dev-names {
+  color: var(--text-secondary);
+}

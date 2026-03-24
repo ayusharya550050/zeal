@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="ZEAL — Annual Cultural Festival of St. Andrews Group of Institutions. Where Passion Meets Performance." />
+  <meta name="theme-color" content="#D4AF37" />
+  <meta property="og:title" content="ZEAL — Annual Cultural Festival" />
+  <meta property="og:description" content="Where Passion Meets Performance" />
+  <meta property="og:type" content="website" />
+  <title>ZEAL — Annual Cultural Festival</title>
+
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="pwa/manifest.json" />
+  <link rel="apple-touch-icon" href="assets/icons/icon-192.png" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" />
+
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
+
+  <!-- AOS -->
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
+
+  <!-- Swiper -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/cursor.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+  <link rel="stylesheet" href="css/light-theme.css" />
+
+  <!-- Early theme init (prevents flash) -->
+  <script>
+    (function(){
+      var t = localStorage.getItem('zeal-theme');
+      if (t === 'light') document.documentElement.classList.add('light-theme-preload');
+    })();
+  </script>
+  <style>
+    .light-theme-preload { background-color: #F8F6F0 !important; }
+  </style>
+</head>
+<body>
+
+  <!-- ===== LOADER ===== -->
+  <div id="loader" role="status" aria-label="Loading ZEAL">
+    <canvas id="loader-canvas"></canvas>
+    <div class="loader-content">
+      <span class="brand-name">ZEAL</span>
+      <span class="brand-subtitle">Annual Cultural Festival</span>
+      <div class="greek-ornament" style="margin-top:1rem;">
+        <div class="greek-ornament-small"></div>
+        <div class="greek-ornament-diamond"></div>
+        <div class="greek-ornament-small"></div>
+      </div>
+      <p style="font-family:'Poppins',sans-serif;font-size:0.75rem;color:rgba(242,242,242,0.4);letter-spacing:0.3em;text-transform:uppercase;margin-top:0.5rem;">St. Andrews Group of Institutions</p>
+    </div>
+    <div class="loader-progress">
+      <div class="loader-progress-bar">
+        <div class="loader-progress-fill"></div>
+      </div>
+      <div class="loader-progress-text">0%</div>
+    </div>
+  </div>
+
+  <!-- ===== CUSTOM CURSOR ===== -->
+  <div class="cursor-dot" aria-hidden="true"></div>
+  <div class="cursor-ring" aria-hidden="true"></div>
+  <div class="cursor-myth-icon" aria-hidden="true"></div>
+
+  <!-- ===== PARTICLES ===== -->
+  <canvas id="particles-canvas" aria-hidden="true"></canvas>
+
+  <!-- ===== PWA INSTALL BANNER ===== -->
+  <div id="pwa-install-banner" style="display:none;position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);background:rgba(20,20,26,0.97);border:1px solid rgba(212,175,55,0.4);border-radius:4px;padding:1rem 1.5rem;z-index:5000;align-items:center;gap:1rem;backdrop-filter:blur(20px);box-shadow:0 0 30px rgba(0,0,0,0.5);">
+    <span style="font-family:'Cinzel',serif;font-size:0.78rem;letter-spacing:0.1em;color:#F2F2F2;">Install ZEAL App</span>
+    <button id="pwa-install-btn" style="font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.15em;padding:0.4rem 1rem;background:var(--gold);border:none;border-radius:2px;color:#0B0B10;cursor:none;">Install</button>
+    <button id="pwa-dismiss-btn" style="background:none;border:none;color:rgba(242,242,242,0.4);font-size:1rem;cursor:none;padding:0;">✕</button>
+  </div>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar-zeal" aria-label="Main navigation">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center">
+        <!-- Brand -->
+        <a href="index.html" class="navbar-brand-zeal">
+          ZEAL
+          <span>St. Andrews Group of Institutions</span>
+        </a>
+
+        <!-- Mobile Toggle -->
+        <button class="navbar-toggler d-lg-none" type="button" id="navToggle" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Nav Links -->
+        <div class="d-none d-lg-flex align-items-center gap-1" id="navLinks">
+          <a href="index.html" class="nav-link-zeal active">Home</a>
+          <a href="events.html" class="nav-link-zeal">Events</a>
+          <a href="team.html" class="nav-link-zeal">Our Team</a>
+          <a href="sponsors.html" class="nav-link-zeal">Sponsors</a>
+          <a href="announcements.html" class="nav-link-zeal">Announcements</a>
+          <button class="btn-install-app ms-1" id="nav-install-btn" aria-label="Install App">
+            <i class="fas fa-download"></i> Install
+          </button>
+          <button class="theme-toggle-btn ms-1" id="themeToggle" aria-label="Toggle theme">
+            <span class="theme-icon">🌙</span>
+            <span class="theme-label">Dark</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Menu -->
+      <div class="collapse" id="mobileMenu">
+        <div class="d-flex flex-column gap-2 py-2">
+          <a href="index.html" class="nav-link-zeal">Home</a>
+          <a href="events.html" class="nav-link-zeal">Events</a>
+          <a href="team.html" class="nav-link-zeal">Our Team</a>
+          <a href="sponsors.html" class="nav-link-zeal">Sponsors</a>
+          <a href="announcements.html" class="nav-link-zeal">Announcements</a>
+          <div class="d-flex gap-2 mt-1">
+            <button class="btn-install-app flex-grow-1 justify-content-center" id="nav-install-btn-mobile" aria-label="Install App">
+              <i class="fas fa-download"></i> Install App
+            </button>
+            <button class="theme-toggle-btn flex-grow-1 justify-content-center" id="themeToggleMobile" aria-label="Toggle theme">
+              <span class="theme-icon">🌙</span>
+              <span class="theme-label">Dark</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+
+  <!-- ===== HERO SECTION ===== -->
+  <section class="hero-section" id="home" aria-labelledby="hero-title">
+    <div class="hero-bg">
+      <div class="hero-bg-gradient"></div>
+      <div class="hero-pillars"></div>
+      <div class="hero-glow-orb hero-glow-orb-1"></div>
+      <div class="hero-glow-orb hero-glow-orb-2"></div>
+      <!-- Light rays -->
+      <div class="hero-rays" aria-hidden="true">
+        <div class="hero-ray" style="transform:rotate(-40deg) translateX(-50%);animation-delay:0s;"></div>
+        <div class="hero-ray" style="transform:rotate(-20deg) translateX(-50%);animation-delay:0.5s;"></div>
+        <div class="hero-ray" style="transform:rotate(0deg) translateX(-50%);animation-delay:1s;"></div>
+        <div class="hero-ray" style="transform:rotate(20deg) translateX(-50%);animation-delay:1.5s;"></div>
+        <div class="hero-ray" style="transform:rotate(40deg) translateX(-50%);animation-delay:2s;"></div>
+      </div>
+    </div>
+
+    <div class="hero-content">
+      <div class="hero-eyebrow">
+        <i class="fas fa-star-of-life" style="font-size:0.6rem;"></i>
+        St. Andrews Group of Institutions Presents
+        <i class="fas fa-star-of-life" style="font-size:0.6rem;"></i>
+      </div>
+      <span class="hero-title" id="hero-title">ZEAL</span>
+      <p class="hero-subtitle">Where <strong>Passion</strong> Meets <strong>Performance</strong></p>
+      <div class="hero-buttons">
+        <a href="events.html" class="btn-hero-primary" data-myth="ares">
+          <i class="fas fa-bolt me-2"></i>Explore Events
+        </a>
+      </div>
+    </div>
+
+    <div class="hero-scroll-indicator" aria-hidden="true">
+      <div class="hero-scroll-line"></div>
+      <span style="font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.3em;color:rgba(212,175,55,0.5);">SCROLL</span>
+    </div>
+  </section>
+
+  <!-- ===== ABOUT SECTION ===== -->
+  <section class="section-zeal about-section" id="about">
+    <div class="noise-overlay"></div>
+    <div class="container">
+      <div class="section-header" data-aos="fade-up">
+        <span class="section-eyebrow">About the Festival</span>
+        <h2 class="section-title">The <span>Legend</span> Returns</h2>
+        <div class="section-divider">
+          <div class="section-divider-line"></div>
+          <i class="section-divider-icon fas fa-crown"></i>
+          <div class="section-divider-line"></div>
+        </div>
+        <p style="max-width:700px;margin:0 auto;color:var(--text-secondary);font-size:0.95rem;line-height:1.9;" data-aos="fade-up" data-aos-delay="100" id="home-about-text">
+          ZEAL is the annual cultural extravaganza of the St. Andrews Group of Institutions — a grand convergence of art, music, dance, drama, and competition. Inspired by the spirit of ancient Greek arenas where the best competed for glory, ZEAL is where talent meets spectacle.
+        </p>
+      </div>
+
+      <!-- Stats -->
+      <div class="row g-4 mb-5" id="home-stats-dynamic">
+        <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="0">
+          <div class="about-card text-center">
+            <span class="about-stat-number" data-count="25" data-suffix="+">0+</span>
+            <div class="about-ornament"></div>
+            <span class="about-stat-label">Events & Competitions</span>
+          </div>
+        </div>
+        <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="100">
+          <div class="about-card text-center">
+            <span class="about-stat-number" data-count="5000" data-suffix="+">0+</span>
+            <div class="about-ornament"></div>
+            <span class="about-stat-label">Participants Expected</span>
+          </div>
+        </div>
+        <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="100">
+          <div class="about-card text-center">
+            <span class="about-stat-number" data-count="50" data-suffix="+">0+</span>
+            <div class="about-ornament"></div>
+            <span class="about-stat-label">Colleges Welcome</span>
+          </div>
+        </div>
+        <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="150">
+          <div class="about-card text-center">
+            <span class="about-stat-number" data-count="3">0</span>
+            <div class="about-ornament"></div>
+            <span class="about-stat-label">Days of Glory</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature Cards -->
+      <div class="row g-4" id="home-highlights-dynamic">
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="0">
+          <div class="about-card" style="text-align:center;">
+            <i class="fas fa-music" style="font-size:2rem;color:var(--gold);margin-bottom:1rem;"></i>
+            <h4 style="font-family:var(--font-subheading);font-size:1.1rem;margin-bottom:0.75rem;color:var(--text-primary);">Performances</h4>
+            <p style="font-size:0.88rem;color:var(--text-secondary);line-height:1.7;">Live music, dance, theatre, and celebrity artist nights that fill the amphitheatre with energy.</p>
+          </div>
+        </div>
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+          <div class="about-card" style="text-align:center;">
+            <i class="fas fa-trophy" style="font-size:2rem;color:var(--gold);margin-bottom:1rem;"></i>
+            <h4 style="font-family:var(--font-subheading);font-size:1.1rem;margin-bottom:0.75rem;color:var(--text-primary);">Competitions</h4>
+            <p style="font-size:0.88rem;color:var(--text-secondary);line-height:1.7;">25+ competitive events across technical, cultural, literary and sports categories with grand prizes.</p>
+          </div>
+        </div>
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+          <div class="about-card" style="text-align:center;">
+            <i class="fas fa-users" style="font-size:2rem;color:var(--gold);margin-bottom:1rem;"></i>
+            <h4 style="font-family:var(--font-subheading);font-size:1.1rem;margin-bottom:0.75rem;color:var(--text-primary);">Community</h4>
+            <p style="font-size:0.88rem;color:var(--text-secondary);line-height:1.7;">Open to all colleges. A platform for networking, creativity, and forging lifelong connections.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== GALLERY SECTION ===== -->
+  <section class="section-zeal gallery-section" id="gallery">
+    <div class="container">
+      <div class="section-header" data-aos="fade-up">
+        <span class="section-eyebrow">Festival Highlights</span>
+        <h2 class="section-title">Moments of <span>Glory</span></h2>
+        <div class="section-divider">
+          <div class="section-divider-line"></div>
+          <i class="section-divider-icon fas fa-images"></i>
+          <div class="section-divider-line"></div>
+        </div>
+      </div>
+    </div>
+    <div class="swiper swiper-gallery" data-aos="fade-up" data-aos-delay="100">
+      <div class="swiper-wrapper" id="home-gallery-wrapper">
+        <!-- Gallery slides with placeholders -->
+        <div class="swiper-slide">
+          <div class="gallery-slide">
+            <div class="gallery-placeholder">
+              <i class="fas fa-music"></i>
+              <span>Concert Night</span>
+            </div>
+            <div class="gallery-slide-overlay">
+              <span class="gallery-slide-title">Music Night — ZEAL 2024</span>
+            </div>
+          </div>
+        </div>
+        <div class="swiper-slide">
+          <div class="gallery-slide">
+            <div class="gallery-placeholder" style="background:linear-gradient(135deg,#1a1a2e,#16213e);">
+              <i class="fas fa-theater-masks"></i>
+              <span>Drama Stage</span>
+            </div>
+            <div class="gallery-slide-overlay">
+              <span class="gallery-slide-title">Drama Competition — ZEAL 2024</span>
+            </div>
+          </div>
+        </div>
+        <div class="swiper-slide">
+          <div class="gallery-slide">
+            <div class="gallery-placeholder" style="background:linear-gradient(135deg,#0d1b2a,#1b2838);">
+              <i class="fas fa-person-dancing"></i>
+              <span>Dance Battle</span>
+            </div>
+            <div class="gallery-slide-overlay">
+              <span class="gallery-slide-title">Dance Competition — ZEAL 2024</span>
+            </div>
+          </div>
+        </div>
+        <div class="swiper-slide">
+          <div class="gallery-slide">
+            <div class="gallery-placeholder" style="background:linear-gradient(135deg,#1a1000,#2a1f00);">
+              <i class="fas fa-users"></i>
+              <span>Crowd Energy</span>
+            </div>
+            <div class="gallery-slide-overlay">
+              <span class="gallery-slide-title">Opening Ceremony — ZEAL 2024</span>
+            </div>
+          </div>
+        </div>
+        <div class="swiper-slide">
+          <div class="gallery-slide">
+            <div class="gallery-placeholder" style="background:linear-gradient(135deg,#0f1923,#0d1b2a);">
+              <i class="fas fa-guitar"></i>
+              <span>Artist Night</span>
+            </div>
+            <div class="gallery-slide-overlay">
+              <span class="gallery-slide-title">Celebrity Night — ZEAL 2024</span>
+            </div>
+          </div>
+        </div>
+        <div class="swiper-slide">
+          <div class="gallery-slide">
+            <div class="gallery-placeholder" style="background:linear-gradient(135deg,#1a0a1e,#200d28);">
+              <i class="fas fa-microphone"></i>
+              <span>Solo Singing</span>
+            </div>
+            <div class="gallery-slide-overlay">
+              <span class="gallery-slide-title">Singing Talent Hunt — ZEAL 2024</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="swiper-pagination"></div>
+    </div>
+  </section>
+
+  <!-- ===== TIMELINE SECTION ===== -->
+  <section class="section-zeal timeline-section" id="artists">
+    <div class="container">
+      <div class="section-header" data-aos="fade-up">
+        <span class="section-eyebrow">Past Performers</span>
+        <h2 class="section-title">Artists Who <span>Graced</span> ZEAL</h2>
+        <div class="section-divider">
+          <div class="section-divider-line"></div>
+          <i class="section-divider-icon fas fa-star"></i>
+          <div class="section-divider-line"></div>
+        </div>
+      </div>
+    </div>
+    <div class="timeline-track" data-aos="fade-up" data-aos-delay="100">
+      <div class="timeline-line"></div>
+      <div class="timeline-items" id="home-timeline-dynamic">
+        <div class="timeline-item">
+          <div class="timeline-card">
+            <span class="timeline-year">2020</span>
+            <span class="timeline-name">Arijit Singh</span>
+            <p class="timeline-genre">Bollywood Playback</p>
+          </div>
+          <div class="timeline-dot"></div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-card">
+            <span class="timeline-year">2021</span>
+            <span class="timeline-name">Badshah</span>
+            <p class="timeline-genre">Hip Hop / Rap</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-card">
+            <span class="timeline-year">2022</span>
+            <span class="timeline-name">Neha Kakkar</span>
+            <p class="timeline-genre">Pop / Bollywood</p>
+          </div>
+          <div class="timeline-dot"></div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-card">
+            <span class="timeline-year">2023</span>
+            <span class="timeline-name">AP Dhillon</span>
+            <p class="timeline-genre">Punjabi / Pop</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-card">
+            <span class="timeline-year">2024</span>
+            <span class="timeline-name">King</span>
+            <p class="timeline-genre">Indie / Urban</p>
+          </div>
+          <div class="timeline-dot"></div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot" style="background:#fff;box-shadow:0 0 20px #fff;"></div>
+          <div class="timeline-card" style="border-color:var(--gold);box-shadow:0 0 20px var(--gold-glow);">
+            <span class="timeline-year" style="color:#fff;">2025</span>
+            <span class="timeline-name">Coming Soon</span>
+            <p class="timeline-genre">Stay Tuned</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FAQ SECTION ===== -->
+  <section class="section-zeal faq-section" id="faq">
+    <div class="container">
+      <div class="section-header" data-aos="fade-up">
+        <span class="section-eyebrow">Have Questions?</span>
+        <h2 class="section-title">Frequently Asked <span>Questions</span></h2>
+        <div class="section-divider">
+          <div class="section-divider-line"></div>
+          <i class="section-divider-icon fas fa-question-circle"></i>
+          <div class="section-divider-line"></div>
+        </div>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-lg-8" data-aos="fade-up" data-aos-delay="100">
+          <div class="accordion accordion-zeal" id="zealFAQ"><div id="home-faq-dynamic"></div>
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                  What is ZEAL?
+                </button>
+              </h2>
+              <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#zealFAQ">
+                <div class="accordion-body">ZEAL is the annual cultural festival of the St. Andrews Group of Institutions. It is a multi-day celebration of art, music, dance, drama, and competition — bringing together thousands of students from across the region.</div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                  Who can participate in ZEAL?
+                </button>
+              </h2>
+              <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#zealFAQ">
+                <div class="accordion-body">ZEAL is open to all college students. Both students of St. Andrews Group of Institutions and students from external colleges are welcome to participate in most events. Check individual event rules for specific eligibility criteria.</div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                  Are students from outside colleges allowed?
+                </button>
+              </h2>
+              <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#zealFAQ">
+                <div class="accordion-body">Yes! ZEAL warmly welcomes participants from all colleges and universities. We believe in fostering inter-college cultural exchange. You will need to carry a valid college ID card. Registration details will be announced on the Announcements page.</div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                  How do I register for events?
+                </button>
+              </h2>
+              <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#zealFAQ">
+                <div class="accordion-body">You can register for events directly on the day of the event at the venue, subject to seat availability. Keep an eye on the Announcements page for registration updates and deadlines.</div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
+                  What prizes are offered at ZEAL?
+                </button>
+              </h2>
+              <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#zealFAQ">
+                <div class="accordion-body">ZEAL offers exciting prizes including cash rewards, trophies, certificates, and special goodies for winners and runners-up across all events. The overall championship team wins the prestigious ZEAL Trophy. Total prize pool exceeds ₹5 Lakhs!</div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq6">
+                  What is the entry fee?
+                </button>
+              </h2>
+              <div id="faq6" class="accordion-collapse collapse" data-bs-parent="#zealFAQ">
+                <div class="accordion-body">Entry fees vary by event and participant type. St. Andrews students get preferential rates. Most individual events have a nominal fee of ₹100-200 per participant. Group events have team-based pricing. Check individual event pages for exact details.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer-zeal">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-lg-4">
+          <div class="footer-brand">ZEAL</div>
+          <p class="footer-tagline">Annual Cultural Festival</p>
+          <p style="font-size:0.82rem;color:var(--text-secondary);margin-top:0.5rem;line-height:1.7;">St. Andrews Group of Institutions<br>Where Passion Meets Performance</p>
+          <div class="footer-social">
+            <a href="#" class="social-icon" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-icon" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-icon" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+            <a href="#" class="social-icon" aria-label="Twitter / X"><i class="fab fa-x-twitter"></i></a>
+          </div>
+        </div>
+        <div class="col-6 col-lg-2 offset-lg-1">
+          <div class="footer-heading">Navigate</div>
+          <a href="index.html" class="footer-link">Home</a>
+          <a href="events.html" class="footer-link">Events</a>
+          <a href="team.html" class="footer-link">Our Team</a>
+          <a href="sponsors.html" class="footer-link">Sponsors</a>
+          <a href="announcements.html" class="footer-link">Announcements</a>
+        </div>
+        <div class="col-6 col-lg-2">
+          <div class="footer-heading">Festival</div>
+          <a href="#" class="footer-link">Schedule</a>
+          <a href="#" class="footer-link">Past Editions</a>
+          <a href="#" class="footer-link">Gallery</a>
+          <a href="#faq" class="footer-link">FAQ</a>
+        </div>
+        <div class="col-lg-3">
+          <div class="footer-heading">Contact</div>
+          <p id="footer-contact-dynamic" style="font-size:0.82rem;color:var(--text-secondary);line-height:1.8;">
+            <i class="fas fa-map-marker-alt" style="color:var(--gold);margin-right:0.5rem;"></i>St. Andrews Group of Institutions<br>
+            <i class="fas fa-envelope" style="color:var(--gold);margin-right:0.5rem;"></i>zeal@standrews.edu.in<br>
+            <i class="fas fa-phone" style="color:var(--gold);margin-right:0.5rem;"></i>+91 XXXXX XXXXX
+          </p>
+        </div>
+      </div>
+      <div class="footer-dev-credit">
+        <p class="footer-dev-label">Website Developed By</p>
+        <p class="footer-dev-names" id="footer-devs-dynamic">Mr. Ayush Arya &nbsp;|&nbsp; Mr. Divyansh Prajapati &nbsp;|&nbsp; Mr. Nimish Nirmal</p>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 <span>ZEAL</span> — St. Andrews Group of Institutions. All rights reserved.<br>Crafted with <span>✦</span> and golden devotion.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===== SCRIPTS ===== -->
+  <!-- Bootstrap -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" defer></script>
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <!-- AOS -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js" defer></script>
+  <!-- Swiper -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
+
+  <!-- Custom Scripts -->
+  <script src="js/loader.js"></script>
+  <script src="js/cursor.js" defer></script>
+  <script src="js/particles.js" defer></script>
+  <script src="js/animations.js" defer></script>
+  <script src="js/main.js" defer></script>
+  <script src="js/theme.js" defer></script>
+  <script src="js/pwa.js" defer></script>
+  <script src="js/zeal-data.js" defer></script>
+
+  <script>
+    // Mobile nav toggle
+    const navToggle = document.getElementById('navToggle');
+    const mobileMenu = document.getElementById('mobileMenu');
+    if (navToggle && mobileMenu) {
+      navToggle.addEventListener('click', () => {
+        mobileMenu.classList.toggle('collapse');
+      });
+    }
+  </script>
+</body>
+</html>
