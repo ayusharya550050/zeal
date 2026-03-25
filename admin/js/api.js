@@ -10,7 +10,7 @@ const _isLocal = location.protocol === 'file:'
   || location.hostname === 'localhost'
   || location.hostname === '127.0.0.1';
 const API_BASE = window.ZEAL_API_BASE
-  || (_isLocal ? 'http://localhost:5000/api' : 'https://zeal-backend-9ron.onrender.com/api');
+  || (_isLocal ? 'http://localhost:5000/api' : 'https://zeal-backend-final.onrender.com/api');
 
 /* ── Auth helpers ──────────────────────────────────────── */
 const Auth = (() => {
