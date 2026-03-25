@@ -512,11 +512,16 @@
     /* Developer credits */
     const devsEl = document.getElementById('footer-devs-dynamic');
     if (devsEl && footer.developers && footer.developers.length) {
-      const devNames = footer.developers
+      const devElements = footer.developers
         .filter(d => d.name)
-        .map(d => d.name + (d.role ? ` (${d.role})` : ''))
-        .join(' &nbsp;|&nbsp; ');
-      if (devNames) devsEl.textContent = devNames;
+        .map(d => {
+          let html = d.name;
+          if (d.role) html += ` (${d.role})`;
+          if (d.github) html += ` <a href="https://github.com/${d.github}" target="_blank" rel="noopener" style="color:var(--gold);margin-left:4px;text-decoration:none;" aria-label="${d.name} GitHub"><i class="fab fa-github"></i></a>`;
+          return `<span>${html}</span>`;
+        })
+        .join('<span style="margin:0 0.5rem;">&middot;</span>');
+      if (devElements) devsEl.innerHTML = devElements;
     }
   }
 
