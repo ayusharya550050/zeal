@@ -198,7 +198,7 @@
 <script>
 Auth.guardPage();
 
-const BASE_URL = 'http://localhost:5000';
+const BASE_URL = API_BASE.replace('/api', '');
 let homeData = null;
 
 // Working copies mutated in memory; saved on button click

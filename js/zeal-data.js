@@ -7,8 +7,11 @@
 (function () {
   'use strict';
 
-  const API_BASE = 'http://localhost:5000/api';
-  const IMG_BASE = 'http://localhost:5000';
+  const _isLocal = location.protocol === 'file:'
+    || location.hostname === 'localhost'
+    || location.hostname === '127.0.0.1';
+  const API_BASE = _isLocal ? 'http://localhost:5000/api' : 'https://zeal-backend-9ron.onrender.com/api';
+  const IMG_BASE = _isLocal ? 'http://localhost:5000' : 'https://zeal-backend-9ron.onrender.com';
 
   /* ── Generic fetch ─────────────────────────────────────── */
   async function apiFetch(path) {

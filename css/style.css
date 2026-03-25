@@ -205,6 +205,7 @@ h4, h5, h6 {
   letter-spacing: 0.15em;
   color: var(--text-primary) !important;
   text-transform: uppercase;
+  text-decoration: none;
   padding: 0.5rem 1rem !important;
   position: relative;
   transition: var(--transition);
@@ -234,6 +235,18 @@ h4, h5, h6 {
 
 .nav-link-zeal.active {
   color: var(--gold) !important;
+}
+
+/* Mobile menu panel */
+#mobileMenu:not(.collapse) {
+  background: rgba(11, 11, 16, 0.97);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid var(--border-gold);
+  border-bottom: 1px solid var(--border-gold);
+  padding: 1rem;
+  margin-top: 0.5rem;
+  border-radius: 4px;
 }
 
 .btn-register {

@@ -150,6 +150,7 @@
 <script>
 Auth.guardPage();
 
+const BASE_URL = API_BASE.replace('/api', '');
 let teamSections = [];
 
 // ── Load from API ──────────────────────────────────────────
@@ -195,7 +196,7 @@ function renderAllSections() {
           : sec.members.map(m => `
             <div class="member-card">
               <img class="member-avatar"
-                src="${m.image ? ('http://localhost:5000' + m.image) : `https://ui-avatars.com/api/?name=${encodeURIComponent(m.name)}&background=D4AF37&color=000&size=60`}"
+                src="${m.image ? (BASE_URL + m.image) : `https://ui-avatars.com/api/?name=${encodeURIComponent(m.name)}&background=D4AF37&color=000&size=60`}"
                 alt="${m.name}" />
               <div class="member-info">
                 <strong>${m.name}</strong>
@@ -306,7 +307,7 @@ function openEditMemberModal(sectionId, memberId) {
   document.getElementById('member-image').value        = '';
   document.getElementById('member-avatar-preview').src =
     m.image
-      ? 'http://localhost:5000' + m.image
+      ? BASE_URL + m.image
       : `https://ui-avatars.com/api/?name=${encodeURIComponent(m.name)}&background=D4AF37&color=000&size=80`;
   openModal('memberModal');
 }

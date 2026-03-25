@@ -161,7 +161,7 @@
 <script>
 Auth.guardPage();
 
-const BASE_URL = 'http://localhost:5000';
+const BASE_URL = API_BASE.replace('/api', '');
 let categories    = []; // full backend response: [{ _id, category, sponsors:[...] }]
 let allSponsors   = []; // flattened [{...sponsor, categoryId, categoryName}]
 let filteredSponsors = [];

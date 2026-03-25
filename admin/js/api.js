@@ -10,16 +10,16 @@ const _isLocal = location.protocol === 'file:'
   || location.hostname === 'localhost'
   || location.hostname === '127.0.0.1';
 const API_BASE = window.ZEAL_API_BASE
-  || (_isLocal ? 'http://localhost:5050/api' : 'https://zeal-backend.onrender.com/api');
+  || (_isLocal ? 'http://localhost:5000/api' : 'https://zeal-backend-9ron.onrender.com/api');
 
 /* ── Auth helpers ──────────────────────────────────────── */
 const Auth = (() => {
   const KEY = 'zeal-admin-token';
 
-  function getToken()       { return localStorage.getItem(KEY); }
-  function setToken(token)  { localStorage.setItem(KEY, token); }
-  function clearToken()     { localStorage.removeItem(KEY); }
-  function isLoggedIn()     { return !!getToken(); }
+  function getToken() { return localStorage.getItem(KEY); }
+  function setToken(token) { localStorage.setItem(KEY, token); }
+  function clearToken() { localStorage.removeItem(KEY); }
+  function isLoggedIn() { return !!getToken(); }
 
   function authHeaders() {
     const token = getToken();
