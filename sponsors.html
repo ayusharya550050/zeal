@@ -99,174 +99,14 @@
 
         <!-- Sponsors — populated from backend by zeal-data.js -->
         <div id="sponsors-dynamic" data-aos="fade-up">
-          <!-- Static fallback shown until backend data loads -->
-          <div class="text-center mb-4">
-            <div class="sponsor-tier-title title-sponsor">
-              <i class="fas fa-crown me-2"></i>Title Sponsor
-            </div>
-            <div class="row justify-content-center">
-              <div class="col-md-6 col-lg-4">
-                <div class="sponsor-card" style="min-height:180px;border-color:var(--gold);box-shadow:0 0 30px var(--gold-glow);">
-                  <i class="fas fa-building" style="font-size:2.5rem;color:var(--gold);margin-bottom:1rem;"></i>
-                  <div class="sponsor-logo-placeholder" style="font-size:1.5rem;">Your Brand Here</div>
-                  <div class="sponsor-logo-sub">Title Sponsor · ZEAL 2025</div>
-                </div>
-              </div>
-            </div>
+          <!-- Loading state shown until zeal-data.js populates this -->
+          <div class="text-center py-5" id="sponsors-loading-placeholder">
+            <i class="fas fa-spinner fa-spin" style="font-size:2rem;color:var(--gold);margin-bottom:1rem;display:block;"></i>
+            <p style="color:var(--text-secondary);">Loading sponsors...</p>
           </div>
 
-        <div class="sponsor-tier-separator"></div>
-
-        <!-- Gold Sponsors -->
-        <div class="text-center mb-4" data-aos="fade-up">
-          <div class="sponsor-tier-title" style="color:var(--gold);">
-            <i class="fas fa-star me-2"></i>Gold Sponsors
-          </div>
-          <div class="row g-4 justify-content-center">
-            <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="0">
-              <div class="sponsor-card">
-                <i class="fas fa-store" style="font-size:1.8rem;color:var(--gold);margin-bottom:0.75rem;"></i>
-                <div class="sponsor-logo-placeholder">GoldPartner I</div>
-                <div class="sponsor-logo-sub">Gold Sponsor</div>
-              </div>
-            </div>
-            <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="50">
-              <div class="sponsor-card">
-                <i class="fas fa-laptop" style="font-size:1.8rem;color:var(--gold);margin-bottom:0.75rem;"></i>
-                <div class="sponsor-logo-placeholder">TechBrand II</div>
-                <div class="sponsor-logo-sub">Gold Sponsor</div>
-              </div>
-            </div>
-            <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="100">
-              <div class="sponsor-card">
-                <i class="fas fa-burger" style="font-size:1.8rem;color:var(--gold);margin-bottom:0.75rem;"></i>
-                <div class="sponsor-logo-placeholder">FoodCo III</div>
-                <div class="sponsor-logo-sub">Gold Sponsor</div>
-              </div>
-            </div>
-            <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="150">
-              <div class="sponsor-card">
-                <i class="fas fa-shirt" style="font-size:1.8rem;color:var(--gold);margin-bottom:0.75rem;"></i>
-                <div class="sponsor-logo-placeholder">FashionX IV</div>
-                <div class="sponsor-logo-sub">Gold Sponsor</div>
-              </div>
-            </div>
-          </div>
         </div>
 
-        <div class="sponsor-tier-separator"></div>
-
-        <!-- Silver Sponsors -->
-        <div class="text-center mb-4" data-aos="fade-up">
-          <div class="sponsor-tier-title" style="color:rgba(192,192,192,0.9);">
-            <i class="fas fa-medal me-2"></i>Silver Sponsors
-          </div>
-          <div class="row g-3 justify-content-center">
-            <div class="col-6 col-md-3 col-lg-2" data-aos="fade-up" data-aos-delay="0">
-              <div class="sponsor-card" style="min-height:110px;padding:1.25rem;">
-                <div class="sponsor-logo-placeholder" style="font-size:0.9rem;">SilverBrand I</div>
-                <div class="sponsor-logo-sub">Silver</div>
-              </div>
-            </div>
-            <div class="col-6 col-md-3 col-lg-2" data-aos="fade-up" data-aos-delay="50">
-              <div class="sponsor-card" style="min-height:110px;padding:1.25rem;">
-                <div class="sponsor-logo-placeholder" style="font-size:0.9rem;">SilverBrand II</div>
-                <div class="sponsor-logo-sub">Silver</div>
-              </div>
-            </div>
-            <div class="col-6 col-md-3 col-lg-2" data-aos="fade-up" data-aos-delay="100">
-              <div class="sponsor-card" style="min-height:110px;padding:1.25rem;">
-                <div class="sponsor-logo-placeholder" style="font-size:0.9rem;">SilverBrand III</div>
-                <div class="sponsor-logo-sub">Silver</div>
-              </div>
-            </div>
-            <div class="col-6 col-md-3 col-lg-2" data-aos="fade-up" data-aos-delay="150">
-              <div class="sponsor-card" style="min-height:110px;padding:1.25rem;">
-                <div class="sponsor-logo-placeholder" style="font-size:0.9rem;">SilverBrand IV</div>
-                <div class="sponsor-logo-sub">Silver</div>
-              </div>
-            </div>
-            <div class="col-6 col-md-3 col-lg-2" data-aos="fade-up" data-aos-delay="200">
-              <div class="sponsor-card" style="min-height:110px;padding:1.25rem;">
-                <div class="sponsor-logo-placeholder" style="font-size:0.9rem;">SilverBrand V</div>
-                <div class="sponsor-logo-sub">Silver</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="sponsor-tier-separator"></div>
-
-        <!-- Associate Sponsors -->
-        <div class="mb-4" data-aos="fade-up">
-          <div class="sponsor-tier-title text-center" style="color:var(--gold-bronze);">Associate Sponsors</div>
-          <div class="row g-3">
-            <div class="col-4 col-md-2" data-aos="fade-up" data-aos-delay="0">
-              <div class="sponsor-card" style="min-height:90px;padding:1rem;">
-                <div class="sponsor-logo-placeholder" style="font-size:0.8rem;">Assoc I</div>
-              </div>
-            </div>
-            <div class="col-4 col-md-2" data-aos="fade-up" data-aos-delay="30">
-              <div class="sponsor-card" style="min-height:90px;padding:1rem;">
-                <div class="sponsor-logo-placeholder" style="font-size:0.8rem;">Assoc II</div>
-              </div>
-            </div>
-            <div class="col-4 col-md-2" data-aos="fade-up" data-aos-delay="60">
-              <div class="sponsor-card" style="min-height:90px;padding:1rem;">
-                <div class="sponsor-logo-placeholder" style="font-size:0.8rem;">Assoc III</div>
-              </div>
-            </div>
-            <div class="col-4 col-md-2" data-aos="fade-up" data-aos-delay="90">
-              <div class="sponsor-card" style="min-height:90px;padding:1rem;">
-                <div class="sponsor-logo-placeholder" style="font-size:0.8rem;">Assoc IV</div>
-              </div>
-            </div>
-            <div class="col-4 col-md-2" data-aos="fade-up" data-aos-delay="120">
-              <div class="sponsor-card" style="min-height:90px;padding:1rem;">
-                <div class="sponsor-logo-placeholder" style="font-size:0.8rem;">Assoc V</div>
-              </div>
-            </div>
-            <div class="col-4 col-md-2" data-aos="fade-up" data-aos-delay="150">
-              <div class="sponsor-card" style="min-height:90px;padding:1rem;">
-                <div class="sponsor-logo-placeholder" style="font-size:0.8rem;">Assoc VI</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="sponsor-tier-separator"></div>
-
-        <!-- Media Partners -->
-        <div class="mb-4" data-aos="fade-up">
-          <div class="sponsor-tier-title text-center">
-            <i class="fas fa-newspaper me-2" style="color:var(--gold);"></i>Media Partners
-          </div>
-          <div class="row g-3 justify-content-center">
-            <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="0">
-              <div class="sponsor-card">
-                <i class="fas fa-broadcast-tower" style="font-size:1.5rem;color:var(--gold);margin-bottom:0.5rem;"></i>
-                <div class="sponsor-logo-placeholder" style="font-size:0.9rem;">MediaPartner I</div>
-                <div class="sponsor-logo-sub">Media Partner</div>
-              </div>
-            </div>
-            <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="50">
-              <div class="sponsor-card">
-                <i class="fas fa-camera" style="font-size:1.5rem;color:var(--gold);margin-bottom:0.5rem;"></i>
-                <div class="sponsor-logo-placeholder" style="font-size:0.9rem;">MediaPartner II</div>
-                <div class="sponsor-logo-sub">Media Partner</div>
-              </div>
-            </div>
-            <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="100">
-              <div class="sponsor-card">
-                <i class="fas fa-photo-film" style="font-size:1.5rem;color:var(--gold);margin-bottom:0.5rem;"></i>
-                <div class="sponsor-logo-placeholder" style="font-size:0.9rem;">MediaPartner III</div>
-                <div class="sponsor-logo-sub">Media Partner</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        </div><!-- end #sponsors-dynamic -->
 
         <!-- Become a Sponsor CTA -->
         <div class="about-card text-center" style="max-width:700px;margin:3rem auto 0;" data-aos="zoom-in">
@@ -329,6 +169,7 @@
   <script src="js/main.js" defer></script>
   <script src="js/theme.js" defer></script>
   <script src="js/pwa.js" defer></script>
+  <script src="js/zeal-data.js" defer></script>
   <script>
     window.dispatchEvent(new Event("loaderComplete"));
     const navToggle = document.getElementById("navToggle");
